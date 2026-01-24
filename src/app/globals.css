@@ -105,24 +105,24 @@
   --radius-4xl: 1.5rem;
   --radius-full: 9999px;
 
-  /* Spacing */
-  --spacing-none: 0rem;
-  --spacing-xxs: 0.125rem;
-  --spacing-xs: 0.25rem;
-  --spacing-sm: 0.375rem;
-  --spacing-md: 0.5rem;
-  --spacing-lg: 0.75rem;
-  --spacing-xl: 1rem;
-  --spacing-2xl: 1.25rem;
-  --spacing-3xl: 1.5rem;
-  --spacing-4xl: 2rem;
-  --spacing-5xl: 2.5rem;
-  --spacing-6xl: 3rem;
-  --spacing-7xl: 4rem;
-  --spacing-8xl: 5rem;
-  --spacing-9xl: 6rem;
-  --spacing-10xl: 8rem;
-  --spacing-11xl: 8.75rem;
+  /* Spacing: Custom app-specific spacing scale (prefixed to avoid conflicts with Tailwind) */
+  --custom-spacing-none: 0rem;
+  --custom-spacing-xxs: 0.125rem;
+  --custom-spacing-xs: 0.25rem;
+  --custom-spacing-sm: 0.375rem;
+  --custom-spacing-md: 0.5rem;
+  --custom-spacing-lg: 0.75rem;
+  --custom-spacing-xl: 1rem;
+  --custom-spacing-2xl: 1.25rem;
+  --custom-spacing-3xl: 1.5rem;
+  --custom-spacing-4xl: 2rem;
+  --custom-spacing-5xl: 2.5rem;
+  --custom-spacing-6xl: 3rem;
+  --custom-spacing-7xl: 4rem;
+  --custom-spacing-8xl: 5rem;
+  --custom-spacing-9xl: 6rem;
+  --custom-spacing-10xl: 8rem;
+  --custom-spacing-11xl: 8.75rem;
 }
 
 @theme inline {
@@ -234,13 +234,6 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer components {
-  .custom-container {
-    margin: 0 auto;
-    @apply max-w-302 pr-6 pl-6;
-  }
 }
 
 @layer utilities {

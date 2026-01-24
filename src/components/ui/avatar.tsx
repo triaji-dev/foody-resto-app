@@ -1,53 +1,113 @@
-"use client"
+import React from 'react';
+import { User } from 'lucide-react';
 
-import * as React from "react"
-import * as AvatarPrimitive from "@radix-ui/react-avatar"
+interface AvatarProps {
+  src?: string;
+  alt?: string;
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
 
-import { cn } from "@/lib/utils"
+export const Avatar = ({
+  src,
+  alt = 'Avatar',
+  size = 'md',
+  className = '',
+}: AvatarProps) => {
+  const sizeClasses = {
+    sm: 'h-6 w-6',
+    md: 'h-8 w-8',
+    lg: 'h-12 w-12',
+  };
 
-function Avatar({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
+  const iconSizes = {
+    sm: 'h-3 w-3',
+    md: 'h-4 w-4',
+    lg: 'h-6 w-6',
+  };
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.style.display = 'none';
+    const fallback = target.nextElementSibling as HTMLElement;
+    if (fallback) fallback.style.display = 'flex';
+  };
+
   return (
-    <AvatarPrimitive.Root
-      data-slot="avatar"
-      className={cn(
-        "relative flex size-8 shrink-0 overflow-hidden rounded-full",
-        className
+    <div
+      className={`relative ${sizeClasses[size]} overflow-hidden rounded-full shadow-sm ring-2 ring-white/20 ${className}`}
+    >
+      {src && (
+        <img
+          src={src}
+          alt={alt}
+          className='h-full w-full object-cover'
+          onError={handleError}
+        />
       )}
-      {...props}
-    />
-  )
-}
+      <div
+        className={`absolute inset-0 flex items-center justify-center bg-linear-to-br from-gray-400 to-gray-600 ${src ? 'hidden' : 'flex'}`}
+        style={{ display: src ? 'none' : 'flex' }}
+      >
+        <User className={`${iconSizes[size]} text-white drop-shadow-sm`} />
+      </div>
+    </div>
+  );
+};
 
-function AvatarImage({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
-  return (
-    <AvatarPrimitive.Image
-      data-slot="avatar-image"
-      className={cn("aspect-square size-full", className)}
-      {...props}
-    />
-  )
-}
+// Generate initials dari nama user
+export const getInitials = (name?: string) => {
+  if (!name) return 'U';
 
-function AvatarFallback({
-  className,
-  ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  const names = name.trim().split(' ');
+  if (names.length === 1) {
+    return names[0].charAt(0).toUpperCase();
+  }
+
+  return (names[0].charAt(0) + names[names.length - 1].charAt(0)).toUpperCase();
+};
+
+// Avatar dengan initials fallback
+export const AvatarWithInitials = ({
+  src,
+  alt = 'Avatar',
+  name,
+  size = 'md',
+  className = '',
+}: AvatarProps & { name?: string }) => {
+  const sizeClasses = {
+    sm: 'h-6 w-6 text-xs',
+    md: 'h-10 w-10 text-sm',
+    lg: 'h-12 w-12 text-lg',
+  };
+
+  const initials = getInitials(name);
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const target = e.target as HTMLImageElement;
+    target.style.display = 'none';
+    const fallback = target.nextElementSibling as HTMLElement;
+    if (fallback) fallback.style.display = 'flex';
+  };
+
   return (
-    <AvatarPrimitive.Fallback
-      data-slot="avatar-fallback"
-      className={cn(
-        "bg-muted flex size-full items-center justify-center rounded-full",
-        className
+    <div
+      className={`relative ${sizeClasses[size]} overflow-hidden rounded-full border-2 border-white/20 shadow-sm ${className}`}
+    >
+      {src && (
+        <img
+          src={src}
+          alt={alt}
+          className='h-full w-full object-cover'
+          onError={handleError}
+        />
       )}
-      {...props}
-    />
-  )
-}
-
-export { Avatar, AvatarImage, AvatarFallback }
+      <div
+        className={`bg-primary-100 absolute inset-0 flex items-center justify-center font-semibold text-white backdrop-blur-sm ${src ? 'hidden' : 'flex'}`}
+        style={{ display: src ? 'none' : 'flex' }}
+      >
+        {initials}
+      </div>
+    </div>
+  );
+};
