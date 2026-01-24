@@ -4,8 +4,6 @@ import Link from 'next/link';
 import { motion } from 'motion/react';
 import { useScreenSize } from '@/hooks/use-screen-size';
 
-// Temporary mock icons assuming they exist in public/icons or use placeholders
-
 const homeMenuData = [
   {
     title: 'All Restaurants',

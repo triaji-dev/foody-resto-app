@@ -10,48 +10,60 @@ export function SignInForm() {
   const {
     data,
     errors,
+    touched,
     error,
     isPending,
     showPassword,
     handleSubmit,
     updateField,
+    handleBlur,
     togglePasswordVisibility,
   } = useSignInForm();
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-4'>
+    <form onSubmit={handleSubmit} className='space-y-5'>
       {/* Email Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <Input
           type='email'
           placeholder='Email'
           value={data.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className={cn('h-12', errors.email && 'border-red-500')}
+          onBlur={() => handleBlur('email')}
+          className={cn(
+            'h-12 md:h-14',
+            touched.email && errors.email && 'border-red-500'
+          )}
         />
-        {errors.email && <p className='text-xs text-red-500'>{errors.email}</p>}
+        {touched.email && errors.email && (
+          <p className='text-xs font-medium text-red-500'>{errors.email}</p>
+        )}
       </div>
 
       {/* Password Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <div className='relative'>
           <Input
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
             value={data.password}
             onChange={(e) => updateField('password', e.target.value)}
-            className={cn('h-12 pr-10', errors.password && 'border-red-500')}
+            onBlur={() => handleBlur('password')}
+            className={cn(
+              'h-12 md:h-14 pr-10',
+              touched.password && errors.password && 'border-red-500'
+            )}
           />
           <button
             type='button'
             onClick={togglePasswordVisibility}
-            className='absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500 hover:text-neutral-700'
+            className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-neutral-500 hover:text-neutral-700'
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-        {errors.password && (
-          <p className='text-xs text-red-500'>{errors.password}</p>
+        {touched.password && errors.password && (
+          <p className='text-xs font-medium text-red-500'>{errors.password}</p>
         )}
       </div>
 
@@ -62,14 +74,17 @@ export function SignInForm() {
           id='rememberMe'
           checked={data.rememberMe}
           onChange={(e) => updateField('rememberMe', e.target.checked)}
-          className='text-primary focus:ring-primary h-4 w-4 rounded border-neutral-300'
+          className='text-primary focus:ring-primary h-4 w-4 cursor-pointer rounded border-neutral-300'
         />
-        <label htmlFor='rememberMe' className='text-sm text-neutral-600'>
+        <label
+          htmlFor='rememberMe'
+          className='cursor-pointer text-sm text-neutral-600'
+        >
           Remember Me
         </label>
       </div>
 
-      {/* Error Message */}
+      {/* API Error Message */}
       {error && (
         <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
           <p className='text-sm text-red-600'>Invalid email or password</p>

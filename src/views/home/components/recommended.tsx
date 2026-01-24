@@ -1,60 +1,26 @@
 'use client';
 
-import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSearchRestaurants } from '@/features/restaurant/use-search';
+import { usePaginatedRestaurants } from '@/features/restaurant';
 import RestaurantCard from '@/components/ui/restaurant-card';
-import SkeletonCard from './skeleton-card';
+import SkeletonCard from '@/views/home/components/skeleton-card';
 import { useScreenSize } from '@/hooks/use-screen-size';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants';
-import type { Restaurant } from '@/types/api';
 
 function Recommended() {
   const router = useRouter();
   const { isMobile } = useScreenSize();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [displayedRestaurants, setDisplayedRestaurants] = useState<
-    Restaurant[]
-  >([]);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
-
   const initialLimit = isMobile ? 6 : 12;
 
-  const { data, isLoading, error, refetch } = useSearchRestaurants({
-    query: '',
-    page: currentPage,
-    limit: initialLimit,
-  });
-
-  React.useEffect(() => {
-    if (data?.restaurants) {
-      if (currentPage === 1) {
-        setDisplayedRestaurants(data.restaurants);
-      } else {
-        setDisplayedRestaurants((prev) => [...prev, ...data.restaurants]);
-      }
-    }
-  }, [data, currentPage]);
-
-  const restaurants = displayedRestaurants;
-  const hasMore = data?.pagination && currentPage < data.pagination.totalPages;
-
-  const handleShowMore = async () => {
-    if (!hasMore || isLoadingMore) return;
-
-    setIsLoadingMore(true);
-    try {
-      const nextPage = currentPage + 1;
-      setCurrentPage(nextPage);
-
-      await refetch();
-    } catch (error) {
-      console.error('Error loading more restaurants:', error);
-    } finally {
-      setIsLoadingMore(false);
-    }
-  };
+  const {
+    restaurants,
+    isLoading,
+    isLoadingMore,
+    error,
+    hasMore,
+    handleShowMore,
+  } = usePaginatedRestaurants({ initialLimit });
 
   return (
     <div>
@@ -70,7 +36,7 @@ function Recommended() {
 
       <div className='flex flex-col gap-6 px-4 pb-10 md:px-30'>
         {/* Loading State */}
-        {isLoading && currentPage === 1 && (
+        {isLoading && (
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
             {Array.from({ length: initialLimit }).map((_, index) => (
               <SkeletonCard key={index} />

@@ -2,7 +2,7 @@
 
 import { motion } from 'motion/react';
 import Image from 'next/image';
-import Searchbar from '@/views/home/searchbar';
+import Searchbar from '@/views/home/components/searchbar';
 
 interface HeroProps {
   onSearch?: (query: string) => void;
@@ -12,7 +12,6 @@ interface HeroProps {
 function Hero({ onSearch, onClearSearch }: HeroProps) {
   return (
     <div className='relative flex min-h-[650px] w-full items-center justify-center sm:h-screen sm:max-h-[827px]'>
-      {/* Optimized Background Image */}
       <Image
         src='/images/hero-background.png'
         alt='Hero background'

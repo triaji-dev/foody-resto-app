@@ -14,104 +14,133 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
   const {
     data,
     errors,
+    touched,
     error,
     isPending,
     showPassword,
     showConfirmPassword,
     handleSubmit,
     updateField,
+    handleBlur,
     togglePasswordVisibility,
     toggleConfirmPasswordVisibility,
   } = useSignUpForm({ onSuccess });
 
   return (
-    <form onSubmit={handleSubmit} className='space-y-4'>
+    <form onSubmit={handleSubmit} className='space-y-5'>
       {/* Name Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <Input
           type='text'
           placeholder='Name'
           value={data.name}
           onChange={(e) => updateField('name', e.target.value)}
-          className={cn('h-12', errors.name && 'border-red-500')}
+          onBlur={() => handleBlur('name')}
+          className={cn(
+            'h-12 md:h-14',
+            touched.name && errors.name && 'border-red-500'
+          )}
         />
-        {errors.name && <p className='text-xs text-red-500'>{errors.name}</p>}
+        {touched.name && errors.name && (
+          <p className='text-xs font-medium text-red-500'>{errors.name}</p>
+        )}
       </div>
 
       {/* Email Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <Input
           type='email'
           placeholder='Email'
           value={data.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className={cn('h-12', errors.email && 'border-red-500')}
+          onBlur={() => handleBlur('email')}
+          className={cn(
+            'h-12 md:h-14',
+            touched.email && errors.email && 'border-red-500'
+          )}
         />
-        {errors.email && <p className='text-xs text-red-500'>{errors.email}</p>}
+        {touched.email && errors.email && (
+          <p className='text-xs font-medium text-red-500'>{errors.email}</p>
+        )}
       </div>
 
       {/* Phone Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <Input
           type='tel'
           placeholder='Phone Number'
           value={data.phone}
           onChange={(e) => updateField('phone', e.target.value)}
-          className={cn('h-12', errors.phone && 'border-red-500')}
+          onBlur={() => handleBlur('phone')}
+          className={cn(
+            'h-12 md:h-14',
+            touched.phone && errors.phone && 'border-red-500'
+          )}
         />
-        {errors.phone && <p className='text-xs text-red-500'>{errors.phone}</p>}
+        {touched.phone && errors.phone && (
+          <p className='text-xs font-medium text-red-500'>{errors.phone}</p>
+        )}
       </div>
 
       {/* Password Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <div className='relative'>
           <Input
             type={showPassword ? 'text' : 'password'}
             placeholder='Password'
             value={data.password}
             onChange={(e) => updateField('password', e.target.value)}
-            className={cn('h-12 pr-10', errors.password && 'border-red-500')}
+            onBlur={() => handleBlur('password')}
+            className={cn(
+              'h-12 md:h-14 pr-10',
+              touched.password && errors.password && 'border-red-500'
+            )}
           />
           <button
             type='button'
             onClick={togglePasswordVisibility}
-            className='absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500 hover:text-neutral-700'
+            className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-neutral-500 hover:text-neutral-700'
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-        {errors.password && (
-          <p className='text-xs text-red-500'>{errors.password}</p>
+        {touched.password && errors.password && (
+          <p className='text-xs font-medium text-red-500'>{errors.password}</p>
         )}
       </div>
 
       {/* Confirm Password Field */}
-      <div className='space-y-2'>
+      <div className='space-y-1'>
         <div className='relative'>
           <Input
             type={showConfirmPassword ? 'text' : 'password'}
             placeholder='Confirm Password'
             value={data.confirmPassword}
             onChange={(e) => updateField('confirmPassword', e.target.value)}
+            onBlur={() => handleBlur('confirmPassword')}
             className={cn(
-              'h-12 pr-10',
-              errors.confirmPassword && 'border-red-500'
+              'h-12 md:h-14 pr-10',
+              touched.confirmPassword &&
+                errors.confirmPassword &&
+                'border-red-500'
             )}
           />
           <button
             type='button'
             onClick={toggleConfirmPasswordVisibility}
-            className='absolute top-1/2 right-3 -translate-y-1/2 text-neutral-500 hover:text-neutral-700'
+            className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-neutral-500 hover:text-neutral-700'
           >
             {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
-        {errors.confirmPassword && (
-          <p className='text-xs text-red-500'>{errors.confirmPassword}</p>
+        {touched.confirmPassword && errors.confirmPassword && (
+          <p className='text-xs font-medium text-red-500'>
+            {errors.confirmPassword}
+          </p>
         )}
       </div>
 
-      {/* Error Message */}
+      {/* API Error Message */}
       {error && (
         <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
           <p className='text-sm text-red-600'>

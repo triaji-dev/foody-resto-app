@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useAuth } from '@/features/auth';
 import { ROUTES } from '@/constants';
@@ -33,21 +34,34 @@ function AuthPage() {
     <div className='flex min-h-screen'>
       {/* Left - Background */}
       <div className='relative hidden lg:flex lg:w-1/2'>
-        <div
-          className='h-full w-full bg-cover bg-center bg-no-repeat'
-          style={{ backgroundImage: 'url(/images/auth-background.png)' }}
+        <Image
+          src='/images/auth-background.png'
+          alt='Auth background'
+          fill
+          className='object-cover object-center'
+          priority
         />
       </div>
 
       {/* Right - Form */}
       <div className='flex w-full items-center justify-center bg-white p-8 lg:w-1/2'>
-        <div className='w-full max-w-md space-y-8'>
-          <AuthHeader />
+        <div className='w-full max-w-[374px] space-y-5'>
+          <AuthHeader activeTab={activeTab} />
 
           <Tabs value={activeTab} onValueChange={handleTabChange}>
-            <TabsList className='grid h-full grid-cols-2 rounded-xl bg-neutral-200 p-1'>
-              <TabsTrigger value='signin'>Sign in</TabsTrigger>
-              <TabsTrigger value='signup'>Sign up</TabsTrigger>
+            <TabsList className='grid h-full w-full grid-cols-2 gap-2 rounded-xl bg-neutral-100 p-1.5 md:p-2'>
+              <TabsTrigger
+                value='signin'
+                className='md:text-md h-9 text-sm md:h-10'
+              >
+                Sign in
+              </TabsTrigger>
+              <TabsTrigger
+                value='signup'
+                className='md:text-md h-9 text-sm md:h-10'
+              >
+                Sign up
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value='signin'>
