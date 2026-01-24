@@ -14,6 +14,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
   const {
     data,
     errors,
+    submitError,
     touched,
     error,
     isPending,
@@ -92,7 +93,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
             onChange={(e) => updateField('password', e.target.value)}
             onBlur={() => handleBlur('password')}
             className={cn(
-              'h-12 md:h-14 pr-10',
+              'h-12 pr-10 md:h-14',
               touched.password && errors.password && 'border-red-500'
             )}
           />
@@ -119,7 +120,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
             onChange={(e) => updateField('confirmPassword', e.target.value)}
             onBlur={() => handleBlur('confirmPassword')}
             className={cn(
-              'h-12 md:h-14 pr-10',
+              'h-12 pr-10 md:h-14',
               touched.confirmPassword &&
                 errors.confirmPassword &&
                 'border-red-500'
@@ -141,11 +142,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
       </div>
 
       {/* API Error Message */}
-      {error && (
+      {submitError && (
         <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
-          <p className='text-sm text-red-600'>
-            Registration failed. Please try again.
-          </p>
+          <p className='text-sm text-red-600'>{submitError}</p>
         </div>
       )}
 

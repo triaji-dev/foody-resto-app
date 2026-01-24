@@ -76,7 +76,11 @@ export function useRestaurantDetail(
 }
 
 // Get best seller restaurants
-export function useBestSellers(page: number = 1, limit: number = 20) {
+export function useBestSellers(
+  page: number = 1,
+  limit: number = 20,
+  options?: { enabled?: boolean }
+) {
   return useQuery({
     queryKey: [...restaurantKeys.bestSellers(), { page, limit }],
     queryFn: async (): Promise<PaginatedResponse<Restaurant>> => {
@@ -86,6 +90,7 @@ export function useBestSellers(page: number = 1, limit: number = 20) {
       return response.data;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: options?.enabled,
   });
 }
 
@@ -123,16 +128,17 @@ export function useNearbyRestaurants(range: number = 10, limit: number = 20) {
 }
 
 // Get recommended restaurants (requires auth)
-export function useRecommendedRestaurants() {
+export function useRecommendedRestaurants(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: restaurantKeys.recommended(),
     queryFn: async (): Promise<Restaurant[]> => {
-      const response = await apiClient.get<Restaurant[]>(
-        '/api/resto/recommended'
-      );
-      return response.data;
+      const response = await apiClient.get<any>('/api/resto/recommended');
+      // Handle potential wrapped response { data: [...] }
+      return response.data?.data || response.data;
     },
     staleTime: 5 * 60 * 1000,
+    enabled: options?.enabled,
+    retry: 1, // Minimize retries on 403 to reduce console noise
   });
 }
 

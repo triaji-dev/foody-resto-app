@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useRegister } from './auth.queries';
+import { AxiosError } from 'axios';
 
 interface SignUpData {
   name: string;
@@ -71,6 +72,7 @@ export function useSignUpForm(options?: UseSignUpFormOptions) {
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -128,6 +130,7 @@ export function useSignUpForm(options?: UseSignUpFormOptions) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError(null);
     if (!validate()) return;
 
     try {
@@ -154,6 +157,18 @@ export function useSignUpForm(options?: UseSignUpFormOptions) {
       }
     } catch (error) {
       console.error('Registration failed:', error);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          setSubmitError('Email or Phone already registered');
+        } else {
+          setSubmitError(
+            error.response?.data?.message ||
+              'Registration failed. Please try again.'
+          );
+        }
+      } else {
+        setSubmitError('An unexpected error occurred.');
+      }
     }
   };
 
@@ -186,7 +201,8 @@ export function useSignUpForm(options?: UseSignUpFormOptions) {
     (field: keyof SignUpData) => {
       setTouched((prev) => ({ ...prev, [field]: true }));
       const value = data[field];
-      const error = validateField(field, value);
+      // Type assertion needed because data[field] could be string (from interface) but compiler might verify stricter keys
+      const error = validateField(field, value as string);
       setErrors((prev) => ({ ...prev, [field]: error }));
     },
     [data, validateField]
@@ -199,6 +215,7 @@ export function useSignUpForm(options?: UseSignUpFormOptions) {
   return {
     data,
     errors,
+    submitError,
     touched,
     showPassword,
     showConfirmPassword,

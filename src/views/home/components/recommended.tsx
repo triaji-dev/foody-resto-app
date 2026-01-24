@@ -1,26 +1,50 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { usePaginatedRestaurants } from '@/features/restaurant';
+import {
+  useRecommendedRestaurants,
+  useBestSellers,
+} from '@/features/restaurant';
+import { useAuth } from '@/features/auth';
+import type { Restaurant } from '@/types/api';
 import RestaurantCard from '@/components/ui/restaurant-card';
 import SkeletonCard from '@/views/home/components/skeleton-card';
-import { useScreenSize } from '@/hooks/use-screen-size';
-import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants';
+import { error } from 'console';
 
 function Recommended() {
   const router = useRouter();
-  const { isMobile } = useScreenSize();
-  const initialLimit = isMobile ? 6 : 12;
+  const { isAuthenticated } = useAuth();
+
+  // Fetch recommended if authenticated
+  const {
+    data: recommendedData,
+    isLoading: isLoadingRecommended,
+    error: errorRecommended,
+    isError: isErrorRecommended,
+  } = useRecommendedRestaurants({ enabled: isAuthenticated });
+
+  // Fetch best sellers if NOT authenticated (fallback) OR if recommended failed (e.g. 403)
+  const showBestSellers = !isAuthenticated || isErrorRecommended;
 
   const {
-    restaurants,
-    isLoading,
-    isLoadingMore,
-    error,
-    hasMore,
-    handleShowMore,
-  } = usePaginatedRestaurants({ initialLimit });
+    data: bestSellersData,
+    isLoading: isLoadingBestSellers,
+    error: errorBestSellers,
+  } = useBestSellers(1, 6, { enabled: showBestSellers });
+
+  // Determine which data to show
+  // If we are strictly trying to show recommended (Auth & !Error), use those states.
+  // Otherwise use Best Seller states.
+  const isLoading = !showBestSellers
+    ? isLoadingRecommended
+    : isLoadingBestSellers;
+  const error = !showBestSellers ? errorRecommended : errorBestSellers;
+
+  // Normalize data: best sellers returns nested structure
+  const restaurants: Restaurant[] | undefined = !showBestSellers
+    ? recommendedData
+    : (bestSellersData as any)?.data?.restaurants;
 
   return (
     <div>
@@ -38,7 +62,7 @@ function Recommended() {
         {/* Loading State */}
         {isLoading && (
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-            {Array.from({ length: initialLimit }).map((_, index) => (
+            {Array.from({ length: 6 }).map((_, index) => (
               <SkeletonCard key={index} />
             ))}
           </div>
@@ -47,12 +71,14 @@ function Recommended() {
         {/* Error State */}
         {error && (
           <div className='py-4 text-center'>
-            <p className='text-red-500'>Gagal memuat data</p>
+            <p className='text-red-500'>
+              {error instanceof Error ? error.message : 'Gagal memuat data'}
+            </p>
           </div>
         )}
 
         {/* Restaurant Cards Grid */}
-        {restaurants.length > 0 && (
+        {restaurants && restaurants.length > 0 && (
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
             {restaurants.map((restaurant) => (
               <RestaurantCard
@@ -66,45 +92,10 @@ function Recommended() {
           </div>
         )}
 
-        {/* Loading More Skeleton Cards */}
-        {isLoadingMore && (
-          <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-            {Array.from({ length: initialLimit }).map((_, index) => (
-              <SkeletonCard key={`loading-more-${index}`} />
-            ))}
-          </div>
-        )}
-
         {/* Empty State */}
-        {!isLoading && !error && restaurants.length === 0 && (
+        {!isLoading && !error && (!restaurants || restaurants.length === 0) && (
           <div className='py-8 text-center'>
-            <p className='text-gray-500'>Tidak ada restoran ditemukan</p>
-          </div>
-        )}
-
-        {/* Show More Button */}
-        {hasMore && (
-          <Button
-            variant='outline'
-            className='mx-auto mt-4 h-12 px-10 py-5'
-            onClick={handleShowMore}
-            disabled={isLoadingMore}
-          >
-            {isLoadingMore ? (
-              <>
-                <div className='mr-2 h-4 w-4 animate-spin rounded-full border-b-2 border-gray-600'></div>
-                Loading...
-              </>
-            ) : (
-              'Show More'
-            )}
-          </Button>
-        )}
-
-        {/* No More Data Message */}
-        {!hasMore && restaurants.length > 0 && (
-          <div className='mt-4 text-center'>
-            <p className='text-sm text-gray-500'>No more restaurants to load</p>
+            <p className='text-gray-500'>No recommended restaurants</p>
           </div>
         )}
       </div>
