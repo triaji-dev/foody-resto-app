@@ -83,11 +83,11 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
 
   return (
     <div className='hidden md:block'>
-      <DropdownMenu>
+      <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
           <button
             className={cn(
-              'flex items-center gap-3 space-x-2 rounded-md px-3 py-2 transition-transform duration-200 hover:scale-102 focus:scale-95 focus:ring-0 focus:outline-none active:scale-95',
+              'flex items-center gap-3 space-x-2 rounded-md px-3 transition-transform duration-200 hover:scale-102 focus:scale-95 focus:ring-0 focus:outline-none active:scale-95',
               isScrolled ? 'text-foreground' : 'text-white'
             )}
           >
@@ -97,7 +97,8 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
                 alt={user?.name || 'Avatar'}
                 name={user?.name}
                 size='lg'
-                className='shadow-lg'
+                className='shadow-[0_2px_12px_rgba(0,0,0,0.1)]'
+                isScrolled={isScrolled}
               />
             </div>
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/features/auth/use-auth';
 import { ROUTES } from '@/constants';
 import { buttonVariants } from '@/components/ui/button';
@@ -18,6 +18,7 @@ function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +53,12 @@ function Navbar() {
         <Link
           href={ROUTES.HOME}
           className='group flex items-center gap-2 font-bold no-underline'
+          onClick={(e) => {
+            if (pathname === ROUTES.HOME) {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+          }}
         >
           <div className='flex items-center gap-4 font-bold transition-transform group-hover:scale-105'>
             <Image

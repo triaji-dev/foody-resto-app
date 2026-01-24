@@ -101,6 +101,8 @@ function MobileMenu({ isScrolled = false }: MobileMenuProps) {
                   alt={user?.name || 'Avatar'}
                   name={user?.name}
                   size='md'
+                  className='shadow-[0_2px_12px_rgba(0,0,0,0.1)]'
+                  isScrolled={isScrolled}
                 />
               </div>
             ) : (
@@ -127,7 +129,13 @@ function MobileMenu({ isScrolled = false }: MobileMenuProps) {
             <>
               <DropdownMenuLabel className='font-normal'>
                 <div className='flex items-center space-x-3'>
-                  <MenuIcons.Profile user={user || undefined} />
+                  <AvatarWithInitials
+                    src={user?.avatarUrl}
+                    alt={user?.name || 'Profile'}
+                    name={user?.name}
+                    size='sm'
+                    className='mr-2'
+                  />
                   <div className='flex flex-col space-y-1'>
                     <p className='text-sm leading-none font-medium'>
                       {user?.name || 'User'}

@@ -6,6 +6,7 @@ interface AvatarProps {
   alt?: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  isScrolled?: boolean;
 }
 
 export const Avatar = ({
@@ -74,6 +75,7 @@ export const AvatarWithInitials = ({
   name,
   size = 'md',
   className = '',
+  isScrolled = false,
 }: AvatarProps & { name?: string }) => {
   const sizeClasses = {
     sm: 'h-6 w-6 text-xs',
@@ -92,7 +94,7 @@ export const AvatarWithInitials = ({
 
   return (
     <div
-      className={`relative ${sizeClasses[size]} overflow-hidden rounded-full border-2 border-white/20 shadow-sm ${className}`}
+      className={`relative ${sizeClasses[size]} overflow-hidden rounded-full border-2 border-white/20 ${className}`}
     >
       {src && (
         <img
@@ -103,8 +105,7 @@ export const AvatarWithInitials = ({
         />
       )}
       <div
-        className={`bg-primary-100 absolute inset-0 flex items-center justify-center font-semibold text-white backdrop-blur-sm ${src ? 'hidden' : 'flex'}`}
-        style={{ display: src ? 'none' : 'flex' }}
+        className={`bg-neutral-500/20 ${isScrolled ? 'text-foreground' : 'text-white'} absolute inset-0 flex items-center justify-center font-semibold backdrop-blur-sm ${src ? 'hidden' : 'flex'}`}
       >
         {initials}
       </div>
