@@ -11,25 +11,25 @@ import Image from 'next/image';
 
 export const MenuIcons = {
   Home: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <Home className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <Home className='h-4 w-4' />
     </div>
   ),
 
   Restaurant: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <UtensilsCrossed className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <UtensilsCrossed className='h-4 w-4' />
     </div>
   ),
 
   Cart: ({} = {}) => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
       <Image
         src='/icons/cart.svg'
         alt='Cart'
         width={16}
         height={16}
-        className='h-4 w-4 drop-shadow-sm'
+        className='h-4 w-4'
         style={{
           filter:
             'brightness(100) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)',
@@ -39,26 +39,26 @@ export const MenuIcons = {
   ),
 
   Orders: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <ClipboardList className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <ClipboardList className='h-4 w-4' />
     </div>
   ),
 
   SignIn: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <LogIn className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <LogIn className='h-4 w-4' />
     </div>
   ),
 
   SignUp: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <UserPlus className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <UserPlus className='h-4 w-4' />
     </div>
   ),
 
   Logout: () => (
-    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full shadow-sm'>
-      <LogOut className='h-4 w-4 drop-shadow-sm' />
+    <div className='mr-2 flex h-5 w-5 items-center justify-center rounded-full'>
+      <LogOut className='h-4 w-4' />
     </div>
   ),
 

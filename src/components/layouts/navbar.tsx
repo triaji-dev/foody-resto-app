@@ -39,15 +39,13 @@ function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 transition-all duration-300 ease-in-out',
-        isScrolled
-          ? 'border-b border-white/20 bg-white/80 shadow-sm backdrop-blur-md'
-          : 'border-b-0 bg-transparent'
+        'fixed top-0 right-0 left-0 z-50 h-16 md:h-20 px-4 py-3 transition-all duration-100 ease-in-out md:px-30 md:py-4',
+        isScrolled ? 'bg-white shadow-sm backdrop-blur-md' : 'bg-transparent'
       )}
     >
       <div
         className={cn(
-          'flex-between w-full flex-row p-4 transition-all duration-300',
+          'flex-between w-full flex-row transition-all duration-300',
           isScrolled ? 'text-foreground' : 'text-white'
         )}
       >
@@ -59,33 +57,29 @@ function Navbar() {
             <Image
               src='/icons/logo-foody.svg'
               alt='Foody Logo'
-              width={44}
-              height={44}
-              className='h-11 w-11 transition-all duration-300'
+              width={42}
+              height={42}
+              className='h-10 w-10 transition-all duration-300 md:h-10.5 md:w-10.5'
               style={{
-                filter: isScrolled
-                  ? 'brightness(0) saturate(100%) invert(18%) sepia(97%) saturate(4456%) hue-rotate(354deg) brightness(95%) contrast(94%)'
-                  : 'none',
+                filter: isScrolled ? 'none' : 'brightness(0) invert(1)',
               }}
             />
-            <span className='display-md-extrabold'>Foody</span>
+            <span className='display-md-extrabold hidden md:block'>Foody</span>
           </div>
         </Link>
 
         <div className='flex flex-row items-center gap-3'>
           {isAuthenticated ? (
-            // Authenticated state - Desktop dropdown menu
             <>
               <CartIcons isScrolled={isScrolled} />
               <DesktopMenu isScrolled={isScrolled} />
             </>
           ) : (
-            // Logged out state - Sign In and Sign Up buttons (Desktop only)
             <div className='hidden items-center gap-3 md:flex'>
               <button
                 onClick={handleSignIn}
                 className={cn(
-                  buttonVariants({ variant: 'default' }), // basic shape from shadcn
+                  buttonVariants({ variant: 'navbar-signin', size: 'none' }),
                   'transition-all duration-200 hover:scale-105 active:scale-95',
                   getSignInButtonStyles(isScrolled)
                 )}
@@ -96,7 +90,7 @@ function Navbar() {
               <button
                 onClick={handleSignUp}
                 className={cn(
-                  buttonVariants({ variant: 'default' }), // basic shape from shadcn
+                  buttonVariants({ variant: 'navbar-signup', size: 'none' }),
                   'transition-all duration-200 hover:scale-105 active:scale-95',
                   getSignUpButtonStyles(isScrolled)
                 )}

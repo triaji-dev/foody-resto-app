@@ -42,7 +42,7 @@ function MobileMenu({ isScrolled = false }: MobileMenuProps) {
         <DropdownMenuTrigger asChild>
           <button
             className={cn(
-              'flex items-center justify-center rounded-md transition-transform hover:scale-105 focus:ring-0 focus:outline-none active:scale-95',
+              'flex h-10 w-10 items-center justify-center rounded-md transition-transform hover:scale-105 focus:ring-0 focus:outline-none active:scale-95',
               isScrolled ? 'text-foreground' : 'text-white'
             )}
           >
@@ -57,7 +57,7 @@ function MobileMenu({ isScrolled = false }: MobileMenuProps) {
               </div>
             ) : (
               <svg
-                className='h-10 w-10'
+                className='h-8 w-8 cursor-pointer'
                 fill='none'
                 stroke='currentColor'
                 viewBox='0 0 24 24'

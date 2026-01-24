@@ -24,7 +24,6 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
   const { isAuthenticated, user, logout } = useAuth();
   const router = useRouter();
 
-  // Only show for authenticated users
   if (!isAuthenticated) {
     return null;
   }

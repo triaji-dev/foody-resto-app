@@ -14,12 +14,17 @@ const breakpoints = {
 
 export function useScreenSize() {
   const [screenSize, setScreenSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0,
+    width: 0,
+    height: 0,
   });
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    setScreenSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+    setIsClient(true);
 
     const handleResize = () => {
       setScreenSize({
@@ -32,12 +37,14 @@ export function useScreenSize() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isMobile = screenSize.width < breakpoints.md;
-  const isTablet =
-    screenSize.width >= breakpoints.md && screenSize.width < breakpoints.lg;
-  const isDesktop = screenSize.width >= breakpoints.lg;
+  const isMobile = isClient ? screenSize.width < breakpoints.md : false;
+  const isTablet = isClient
+    ? screenSize.width >= breakpoints.md && screenSize.width < breakpoints.lg
+    : false;
+  const isDesktop = isClient ? screenSize.width >= breakpoints.lg : true;
 
   const isAtLeast = (breakpoint: Breakpoint) => {
+    if (!isClient) return true;
     return screenSize.width >= breakpoints[breakpoint];
   };
 
@@ -48,5 +55,6 @@ export function useScreenSize() {
     isTablet,
     isDesktop,
     isAtLeast,
+    isClient,
   };
 }

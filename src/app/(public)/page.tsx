@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Hero from '@/components/home/hero';
-import HomeMenu from '@/components/home/home-menu';
-import Recommended from '@/components/home/recommended';
-import SearchResult from '@/components/home/search-result';
+import Hero from '@/components/views/home/hero';
+import HomeMenu from '@/components/views/home/home-menu';
+import Recommended from '@/components/views/home/recommended';
+import SearchResult from '@/components/views/home/search-result';
 import { useSearchState } from '@/hooks/use-search';
 import { GeolocationProvider } from '@/components/providers/geolocation-provider';
 
@@ -25,14 +25,12 @@ export default function Home() {
 
   const handleSearchFromRecommended = (query: string) => {
     handleSearch(query);
-    setShowSearchMode(false); // Switch back to search results after search
+    setShowSearchMode(false);
   };
 
   return (
     <GeolocationProvider autoRequest={true}>
       <div className='relative min-h-screen bg-neutral-50'>
-        {/* Navbar and Footer are provided by the MainLayout wrapper in (public)/layout.tsx */}
-
         <Hero onSearch={handleSearch} onClearSearch={clearSearch} />
         <HomeMenu />
 

@@ -9,13 +9,8 @@ import { useScreenSize } from '@/hooks/use-screen-size';
 import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants';
 import type { Restaurant } from '@/types/Restaurant';
-import { Separator } from '@/components/ui/separator';
 
-interface RecommendedProps {
-  onToggleSearchMode?: () => void;
-}
-
-function Recommended({ onToggleSearchMode }: RecommendedProps) {
+function Recommended() {
   const router = useRouter();
   const { isMobile } = useScreenSize();
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,14 +21,12 @@ function Recommended({ onToggleSearchMode }: RecommendedProps) {
 
   const initialLimit = isMobile ? 6 : 12;
 
-  // Re-using useSearchRestaurants as a generic fetch for now
   const { data, isLoading, error, refetch } = useSearchRestaurants({
-    query: '', // Empty query implies "all" or "recommended"
+    query: '',
     page: currentPage,
     limit: initialLimit,
   });
 
-  // Update displayed restaurants when data changes
   React.useEffect(() => {
     if (data?.restaurants) {
       if (currentPage === 1) {
@@ -47,7 +40,6 @@ function Recommended({ onToggleSearchMode }: RecommendedProps) {
   const restaurants = displayedRestaurants;
   const hasMore = data?.pagination && currentPage < data.pagination.totalPages;
 
-  // Function to load more restaurants
   const handleShowMore = async () => {
     if (!hasMore || isLoadingMore) return;
 
@@ -56,7 +48,6 @@ function Recommended({ onToggleSearchMode }: RecommendedProps) {
       const nextPage = currentPage + 1;
       setCurrentPage(nextPage);
 
-      // Refetch with new page
       await refetch();
     } catch (error) {
       console.error('Error loading more restaurants:', error);
@@ -69,21 +60,12 @@ function Recommended({ onToggleSearchMode }: RecommendedProps) {
     <div>
       <div className='mx-auto mb-8 flex max-w-7xl flex-row items-center justify-between px-4 sm:px-6 lg:px-4'>
         <h1 className='display-md-extrabold'>Recommended</h1>
-        <div className='flex items-center gap-4'>
-          <p
-            className='text-lg-extrabold text-foreground mt-2 cursor-pointer hover:underline'
-            onClick={onToggleSearchMode}
-          >
-            Search
-          </p>
-          <Separator orientation='vertical' className='h-6' />
-          <p
-            className='text-lg-extrabold text-primary mt-2 cursor-pointer hover:underline'
-            onClick={() => router.push(ROUTES.RESTAURANTS)}
-          >
-            See All
-          </p>
-        </div>
+        <p
+          className='text-lg-extrabold text-primary cursor-pointer hover:underline'
+          onClick={() => router.push(ROUTES.RESTAURANTS)}
+        >
+          See All
+        </p>
       </div>
 
       <div className='mx-auto flex max-w-7xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-4'>
@@ -138,7 +120,7 @@ function Recommended({ onToggleSearchMode }: RecommendedProps) {
         {hasMore && (
           <Button
             variant='outline'
-            className='mx-auto mt-4 px-10 py-5 shadow-lg'
+            className='mx-auto mt-4 h-12 px-10 py-5'
             onClick={handleShowMore}
             disabled={isLoadingMore}
           >

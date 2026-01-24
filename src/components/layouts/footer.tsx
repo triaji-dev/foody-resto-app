@@ -4,7 +4,7 @@ import { ROUTES } from '@/constants';
 
 function Footer() {
   return (
-    <footer className='bg-neutral-900 text-white'>
+    <footer className='bg-neutral-900 px-30 text-white'>
       <div className='w-full px-4 py-12 md:py-16'>
         <div className='grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-12'>
           {/* Brand Section */}
