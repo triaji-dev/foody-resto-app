@@ -28,14 +28,14 @@ function RestaurantCard({
   const getTextSize = () => {
     if (isMobile)
       return {
-        name: 'text-sm font-bold',
-        rating: 'text-xs',
-        location: 'text-xs text-gray-600',
+        name: 'text-md font-extrabold',
+        rating: 'text-sm',
+        location: 'text-sm text-gray-600',
       };
     return {
-      name: 'text-base font-bold',
-      rating: 'text-sm',
-      location: 'text-sm text-gray-600',
+      name: 'text-lg font-extrabold',
+      rating: 'text-md',
+      location: 'text-md text-gray-600',
     };
   };
 
@@ -43,7 +43,7 @@ function RestaurantCard({
 
   return (
     <div
-      className={`flex cursor-pointer items-center gap-3 rounded-xl bg-white p-3 shadow-sm transition-all duration-300 hover:scale-[1.04] hover:shadow-md active:scale-[0.95] sm:rounded-2xl ${
+      className={`flex cursor-pointer items-center gap-3 rounded-xl bg-white p-3 shadow-[0px_0px_20px_0px_rgba(203,202,202,0.25)] transition-all duration-300 hover:scale-[1.04] hover:shadow-md active:scale-[0.95] sm:rounded-2xl ${
         isMobile ? 'p-3' : 'p-4'
       }`}
       onClick={onClick}
