@@ -1,3 +1,6 @@
+'use client';
+
+import Image from 'next/image';
 import { Star } from 'lucide-react';
 import type { Restaurant } from '@/types/api';
 import { useScreenSize } from '@/hooks/use-screen-size';
@@ -49,26 +52,16 @@ function RestaurantCard({
       onClick={onClick}
     >
       <div
-        className={`shrink-0 overflow-hidden rounded-md sm:rounded-xl ${getImageSize()}`}
+        className={`relative shrink-0 overflow-hidden rounded-md sm:rounded-xl ${getImageSize()}`}
       >
-        <img
+        <Image
           src={
             restaurant.images?.[0] || restaurant.logo || '/icons/bk-logo.png'
           }
           alt={`${restaurant.name || 'Restaurant'} logo`}
-          className='h-full w-full object-cover'
-          loading='lazy'
-          onError={(e) => {
-            const img = e.target as HTMLImageElement;
-            if (img.src === (restaurant.images?.[0] || '')) {
-              img.src = restaurant.logo || '/icons/bk-logo.png';
-            } else if (
-              img.src !==
-              window.location.origin + '/icons/bk-logo.png'
-            ) {
-              img.src = '/icons/bk-logo.png';
-            }
-          }}
+          fill
+          className='object-cover'
+          sizes='(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px'
         />
       </div>
 

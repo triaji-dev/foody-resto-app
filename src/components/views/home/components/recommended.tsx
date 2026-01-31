@@ -8,7 +8,7 @@ import {
 import { useAuth } from '@/features/auth';
 import type { Restaurant } from '@/types/api';
 import RestaurantCard from '@/components/ui/restaurant-card';
-import SkeletonCard from '@/views/home/components/skeleton-card';
+import SkeletonCard from '@/components/views/home/components/skeleton-card';
 import { ROUTES } from '@/constants';
 
 function Recommended() {
@@ -77,9 +77,7 @@ function Recommended() {
               <RestaurantCard
                 key={restaurant.id}
                 restaurant={restaurant}
-                onClick={() =>
-                  console.log('View details for:', restaurant.name)
-                }
+                onClick={() => router.push(`/restaurant/${restaurant.id}`)}
               />
             ))}
           </div>

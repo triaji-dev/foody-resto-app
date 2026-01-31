@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useScreenSize } from '@/hooks/use-screen-size';
 
 const homeMenuData = [
@@ -60,9 +61,11 @@ function HomeMenu() {
           className='group flex flex-col items-center space-y-2 rounded-lg'
         >
           <div className='flex h-25 w-full items-center justify-center rounded-2xl bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.05)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(0,0,0,0.15)] group-active:scale-95'>
-            <img
+            <Image
               src={item.icon}
               alt={item.title}
+              width={64}
+              height={64}
               className={`${getIconSize()} transition-transform duration-300 group-hover:scale-110`}
             />
           </div>

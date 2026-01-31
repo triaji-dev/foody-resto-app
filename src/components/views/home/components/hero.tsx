@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import Searchbar from '@/views/home/components/searchbar';
+import Searchbar from '@/components/views/home/components/searchbar';
 
 interface HeroProps {
   onSearch?: (query: string) => void;
@@ -13,7 +13,7 @@ function Hero({ onSearch, onClearSearch }: HeroProps) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className='relative flex min-h-[650px] w-full items-center justify-center sm:h-screen md:max-h-[827px] 2xl:max-h-[927px]'>
+    <div className='relative flex min-h-[500px] w-full items-center justify-center sm:h-screen sm:min-h-[650px] md:max-h-[827px] 2xl:max-h-[927px]'>
       <div
         className={`absolute inset-0 z-0 animate-pulse bg-gray-950 ${isLoaded ? 'hidden' : 'block'}`}
       />

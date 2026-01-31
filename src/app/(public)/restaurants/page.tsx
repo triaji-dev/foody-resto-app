@@ -1,4 +1,4 @@
-import RestaurantListPage from '@/views/restaurant-list/restaurant-list-page';
+import RestaurantListPage from '@/components/views/restaurant-list/restaurant-list-page';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

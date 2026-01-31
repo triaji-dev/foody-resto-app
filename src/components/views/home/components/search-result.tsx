@@ -132,9 +132,7 @@ function SearchResult({
                 <RestaurantCard
                   key={restaurant.id}
                   restaurant={restaurant}
-                  onClick={() =>
-                    console.log('View details for:', restaurant.name)
-                  }
+                  onClick={() => router.push(`/restaurant/${restaurant.id}`)}
                 />
               ))}
             </div>
