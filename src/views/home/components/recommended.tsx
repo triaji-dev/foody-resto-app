@@ -16,7 +16,6 @@ function Recommended() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
 
-  // Fetch recommended if authenticated
   const {
     data: recommendedData,
     isLoading: isLoadingRecommended,
@@ -24,7 +23,6 @@ function Recommended() {
     isError: isErrorRecommended,
   } = useRecommendedRestaurants({ enabled: isAuthenticated });
 
-  // Fetch best sellers if NOT authenticated (fallback) OR if recommended failed (e.g. 403)
   const showBestSellers = !isAuthenticated || isErrorRecommended;
 
   const {
@@ -33,22 +31,18 @@ function Recommended() {
     error: errorBestSellers,
   } = useBestSellers(1, 6, { enabled: showBestSellers });
 
-  // Determine which data to show
-  // If we are strictly trying to show recommended (Auth & !Error), use those states.
-  // Otherwise use Best Seller states.
   const isLoading = !showBestSellers
     ? isLoadingRecommended
     : isLoadingBestSellers;
   const error = !showBestSellers ? errorRecommended : errorBestSellers;
 
-  // Normalize data: best sellers returns nested structure
   const restaurants: Restaurant[] | undefined = !showBestSellers
     ? recommendedData
     : (bestSellersData as any)?.data?.restaurants;
 
   return (
     <div>
-      <div className='mb-8 flex flex-row items-center justify-between px-4 md:px-30'>
+      <div className='mb-8 flex flex-row items-center justify-between px-4 sm:px-[clamp(1rem,8.33vw,7.5rem)]'>
         <h1 className='display-md-extrabold'>Recommended</h1>
         <p
           className='text-lg-extrabold text-primary cursor-pointer hover:underline'
@@ -58,7 +52,7 @@ function Recommended() {
         </p>
       </div>
 
-      <div className='flex flex-col gap-6 px-4 pb-10 md:px-30'>
+      <div className='flex flex-col gap-6 px-4 pb-10 sm:px-[clamp(1rem,8.33vw,7.5rem)]'>
         {/* Loading State */}
         {isLoading && (
           <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>

@@ -27,19 +27,9 @@ export function AuthHeader({ activeTab = 'signin' }: AuthHeaderProps) {
 
   return (
     <>
-      {/* Back Button */}
-      <Button
-        variant='link'
-        onClick={() => router.push(ROUTES.HOME)}
-        className='flex items-center space-x-2 text-neutral-600 hover:text-neutral-800'
-      >
-        <ArrowLeft size={20} />
-        <span className='text-sm font-medium'>Back</span>
-      </Button>
-
       {/* Logo and Welcome Text */}
       <div className='space-y-5'>
-        <div className='flex items-center space-x-2'>
+        <Button variant='logo' size='none' onClick={() => router.push(ROUTES.HOME)}>
           <Image
             src='/icons/logo-foody.svg'
             alt='Foody Logo'
@@ -47,8 +37,10 @@ export function AuthHeader({ activeTab = 'signin' }: AuthHeaderProps) {
             height={42}
             className='h-10.5 w-10.5'
           />
-          <h1 className='display-md-extrabold text-foreground'>Foody</h1>
-        </div>
+          <h1 className='display-md-extrabold text-foreground'>
+            Foody
+          </h1>
+        </Button>
         <div className='space-y-1'>
           <h2 className='display-sm-extrabold text-foreground'>
             {content.title}

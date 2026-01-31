@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'motion/react';
 import { useScreenSize } from '@/hooks/use-screen-size';
 
 const homeMenuData = [
   {
     title: 'All Restaurants',
-    href: '#',
+    href: '/restaurants',
     icon: '/icons/all-restaurants-icon.png',
   },
   {
@@ -53,43 +52,26 @@ function HomeMenu() {
   };
 
   return (
-    <div className='mx-5 md:mx-30 mt-6 mb-16 grid grid-cols-3 gap-5 sm:mt-12 sm:gap-12 lg:grid-cols-6'>
+    <div className='mt-6 mb-16 grid grid-cols-3 gap-[clamp(1.25rem,3.33vw,3rem)] px-4 sm:mt-12 sm:px-[clamp(1rem,8.33vw,7.5rem)] lg:grid-cols-6'>
       {homeMenuData.map((item) => (
-        <motion.div
+        <Link
           key={item.title}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          transition={{ type: 'spring', stiffness: 100 }}
+          href={item.href}
+          className='group flex flex-col items-center space-y-2 rounded-lg'
         >
-          <Link
-            href={item.href}
-            className='flex flex-col items-center space-y-2 rounded-lg transition-colors duration-200'
+          <div className='flex h-25 w-full items-center justify-center rounded-2xl bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.05)] transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_0_25px_rgba(0,0,0,0.15)] group-active:scale-95'>
+            <img
+              src={item.icon}
+              alt={item.title}
+              className={`${getIconSize()} transition-transform duration-300 group-hover:scale-110`}
+            />
+          </div>
+          <span
+            className={`${getTextSize()} group-hover:text-primary text-center transition-colors duration-300`}
           >
-            <motion.div
-              className='flex h-25 w-full items-center justify-center rounded-2xl bg-white p-3 shadow-[0_0_10px_rgba(0,0,0,0.05)] transition-colors duration-200'
-              whileHover={{
-                scale: 1.02,
-                boxShadow: '0 0 25px rgba(0, 0, 0, 0.15)',
-              }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <motion.img
-                src={item.icon}
-                alt={item.title}
-                className={getIconSize()}
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: 'spring', stiffness: 400 }}
-              />
-            </motion.div>
-            <motion.span
-              className={`${getTextSize()} text-center`}
-              whileHover={{ scale: 1.05, color: 'var(--primary)' }}
-              transition={{ type: 'spring', stiffness: 400 }}
-            >
-              {item.title}
-            </motion.span>
-          </Link>
-        </motion.div>
+            {item.title}
+          </span>
+        </Link>
       ))}
     </div>
   );

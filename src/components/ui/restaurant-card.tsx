@@ -1,5 +1,4 @@
 import { Star } from 'lucide-react';
-import { motion } from 'motion/react';
 import type { Restaurant } from '@/types/api';
 import { useScreenSize } from '@/hooks/use-screen-size';
 import { useGeolocationContext } from '@/components/providers/geolocation-provider';
@@ -43,13 +42,10 @@ function RestaurantCard({
   const textSizes = getTextSize();
 
   return (
-    <motion.div
-      className={`flex cursor-pointer items-center gap-3 rounded-xl bg-white p-3 shadow-sm transition-all hover:shadow-md sm:rounded-2xl ${
+    <div
+      className={`flex cursor-pointer items-center gap-3 rounded-xl bg-white p-3 shadow-sm transition-all duration-300 hover:scale-[1.04] hover:shadow-md active:scale-[0.95] sm:rounded-2xl ${
         isMobile ? 'p-3' : 'p-4'
       }`}
-      whileHover={{ scale: 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       onClick={onClick}
     >
       <div
@@ -94,7 +90,7 @@ function RestaurantCard({
           <span>{displayDistance}</span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'motion/react';
 
 interface SearchbarProps {
   onSearch?: (query: string) => void;
@@ -42,23 +41,16 @@ function Searchbar({ onSearch, onClear, defaultValue = '' }: SearchbarProps) {
   };
 
   return (
-    <motion.form
+    <form
       onSubmit={handleSearch}
-      className='relative mx-auto w-full max-w-[604px]'
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      className='animate-in fade-in slide-in-from-bottom-4 relative mx-auto w-full max-w-[604px] delay-300 duration-500'
     >
       <div className='relative'>
         {/* Search Icon */}
-        <motion.div
-          className={`absolute top-1/2 left-4 z-10 -translate-y-1/2 transform ${
-            isFocused ? 'text-primary' : 'text-muted-foreground'
+        <div
+          className={`absolute top-1/2 left-4 z-10 -translate-y-1/2 transform transition-all duration-200 ${
+            isFocused ? 'text-primary scale-110' : 'text-muted-foreground'
           }`}
-          animate={{
-            scale: isFocused ? 1.1 : 1,
-          }}
-          transition={{ duration: 0.2 }}
         >
           <svg
             className='h-5 w-5'
@@ -74,35 +66,29 @@ function Searchbar({ onSearch, onClear, defaultValue = '' }: SearchbarProps) {
               d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
             />
           </svg>
-        </motion.div>
+        </div>
 
         {/* Input Field */}
-        <motion.input
+        <input
           type='text'
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
           onFocus={handleFocus}
           onBlur={handleBlur}
           placeholder='Search restaurants, food, and drink...'
-          className={`w-full rounded-full border py-4 pr-16 pl-12 text-black backdrop-blur-md transition-all duration-300 placeholder:text-neutral-600 placeholder:text-sm-regular md:placeholder:text-md-regular focus:ring-2 focus:outline-none focus:placeholder:text-neutral-400 ${
+          className={`placeholder:text-sm-regular md:placeholder:text-md-regular w-full rounded-full border py-4 pr-16 pl-12 text-black backdrop-blur-md transition-all duration-300 placeholder:text-neutral-600 focus:ring-2 focus:outline-none focus:placeholder:text-neutral-400 ${
             isFocused
               ? 'bg-background border-primary ring-primary/50 shadow-[0_10px_25px_rgba(0,0,0,0.1),0_0_0_1px_var(--primary)]'
               : 'border-border bg-white shadow-[0_4px_6px_rgba(0,0,0,0.05)]'
           }`}
-          transition={{ duration: 0.3 }}
         />
 
         {/* Clear Button */}
         {searchValue && (
-          <motion.button
+          <button
             type='button'
             onClick={handleClear}
-            className='text-muted-foreground hover:text-foreground absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer p-1 transition-colors'
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+            className='text-muted-foreground hover:text-foreground animate-in zoom-in fade-in absolute top-1/2 right-4 -translate-y-1/2 transform cursor-pointer p-1 transition-all duration-200 hover:scale-110 active:scale-90'
           >
             <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
               <path
@@ -111,10 +97,10 @@ function Searchbar({ onSearch, onClear, defaultValue = '' }: SearchbarProps) {
                 clipRule='evenodd'
               />
             </svg>
-          </motion.button>
+          </button>
         )}
       </div>
-    </motion.form>
+    </form>
   );
 }
 

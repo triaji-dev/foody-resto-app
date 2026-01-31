@@ -19,6 +19,12 @@ function Navbar() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const isHomePage = pathname === ROUTES.HOME;
+
+  // Navbar is transparent only on homepage AND when not scrolled
+  const isTransparent = isHomePage && !isScrolled;
+  // Elements use "scrolled" styles if either the page IS scrolled OR we're not on the homepage
+  const useScrolledStyles = isScrolled || !isHomePage;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,14 +46,14 @@ function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 h-16 px-4 py-3 transition-all duration-100 ease-in-out md:h-20 md:px-30 md:py-4',
-        isScrolled ? 'bg-white shadow-sm backdrop-blur-md' : 'bg-transparent'
+        'fixed top-0 right-0 left-0 z-50 h-16 px-4 py-3 transition-all duration-100 ease-in-out sm:px-[clamp(1rem,8.33vw,7.5rem)] md:h-20 md:py-4',
+        isTransparent ? 'bg-transparent' : 'bg-white shadow-sm backdrop-blur-md'
       )}
     >
       <div
         className={cn(
           'flex-between w-full flex-row transition-all duration-300',
-          isScrolled ? 'text-foreground' : 'text-white'
+          useScrolledStyles ? 'text-foreground' : 'text-white'
         )}
       >
         <Link
@@ -68,7 +74,7 @@ function Navbar() {
               height={42}
               className='h-10 w-10 transition-all duration-300 md:h-10.5 md:w-10.5'
               style={{
-                filter: isScrolled ? 'none' : 'brightness(0) invert(1)',
+                filter: useScrolledStyles ? 'none' : 'brightness(0) invert(1)',
               }}
             />
             <span className='display-md-extrabold hidden md:block'>Foody</span>
@@ -78,8 +84,8 @@ function Navbar() {
         <div className='flex flex-row items-center gap-3'>
           {isAuthenticated ? (
             <>
-              <CartIcons isScrolled={isScrolled} />
-              <DesktopMenu isScrolled={isScrolled} />
+              <CartIcons isScrolled={useScrolledStyles} />
+              <DesktopMenu isScrolled={useScrolledStyles} />
             </>
           ) : (
             <div className='hidden items-center gap-3 md:flex'>
@@ -88,7 +94,7 @@ function Navbar() {
                 className={cn(
                   buttonVariants({ variant: 'secondary', size: 'none' }),
                   'transition-all duration-200 hover:scale-105 active:scale-95',
-                  getSignInButtonStyles(isScrolled)
+                  getSignInButtonStyles(useScrolledStyles)
                 )}
               >
                 Sign In
@@ -99,7 +105,7 @@ function Navbar() {
                 className={cn(
                   buttonVariants({ variant: 'default', size: 'none' }),
                   'transition-all duration-200 hover:scale-105 active:scale-95',
-                  getSignUpButtonStyles(isScrolled)
+                  getSignUpButtonStyles(useScrolledStyles)
                 )}
               >
                 Sign Up
@@ -108,7 +114,7 @@ function Navbar() {
           )}
 
           {/* Mobile Menu */}
-          <MobileMenu isScrolled={isScrolled} />
+          <MobileMenu isScrolled={useScrolledStyles} />
         </div>
       </div>
     </nav>

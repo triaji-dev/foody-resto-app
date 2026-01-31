@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Hero from '@/views/home/components/hero';
 import HomeMenu from '@/views/home/components/home-menu';
 import Recommended from '@/views/home/components/recommended';
 import SearchResult from '@/views/home/components/search-result';
 import { useSearchState } from '@/features/restaurant/use-search';
 import { GeolocationProvider } from '@/components/providers/geolocation-provider';
+import { useScrollToTop } from '@/hooks/use-scroll-to-top';
 
 export default function HomePage() {
   const [showSearchMode, setShowSearchMode] = useState(false);
+
+  // Custom hook for scroll-to-top logic
+  useScrollToTop();
 
   const {
     searchQuery,
@@ -19,29 +23,17 @@ export default function HomePage() {
     setSearchComplete,
   } = useSearchState();
 
-  const handleToggleSearchMode = () => {
-    setShowSearchMode(!showSearchMode);
-  };
-
-  const handleSearchFromRecommended = (query: string) => {
-    handleSearch(query);
-    setShowSearchMode(false);
-  };
-
-  React.useEffect(() => {
-    // Scroll to top on mount
-    window.scrollTo(0, 0);
-
-    // Reset scroll position before page unload so browser restores to top
-    const handleBeforeUnload = () => {
-      window.scrollTo(0, 0);
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
+  const handleToggleSearchMode = useCallback(() => {
+    setShowSearchMode((prev) => !prev);
   }, []);
+
+  const handleSearchFromRecommended = useCallback(
+    (query: string) => {
+      handleSearch(query);
+      setShowSearchMode(false);
+    },
+    [handleSearch]
+  );
 
   return (
     <GeolocationProvider autoRequest={true}>

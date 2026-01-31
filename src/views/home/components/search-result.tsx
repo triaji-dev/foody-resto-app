@@ -44,7 +44,6 @@ function SearchResult({
     initialLimit,
   });
 
-  // Notify parent when search completes
   if (!isLoading && onSearchComplete) {
     onSearchComplete();
   }

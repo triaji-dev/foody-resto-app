@@ -7,19 +7,19 @@ export function useSearchState() {
   const [searchQuery, setSearchQuery] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = (query: string) => {
+  const handleSearch = useCallback((query: string) => {
     setSearchQuery(query);
     setHasSearched(!!query);
-  };
+  }, []);
 
-  const clearSearch = () => {
+  const clearSearch = useCallback(() => {
     setSearchQuery('');
     setHasSearched(false);
-  };
+  }, []);
 
-  const setSearchComplete = () => {
+  const setSearchComplete = useCallback(() => {
     // Optional: Logic to run when search finishes
-  };
+  }, []);
 
   return {
     searchQuery,

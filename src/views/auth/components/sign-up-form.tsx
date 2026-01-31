@@ -114,7 +114,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
       <div className='space-y-1'>
         <div className='relative'>
           <Input
-            type={showConfirmPassword ? 'text' : 'password'}
+            type={showPassword ? 'text' : 'password'}
             placeholder='Confirm Password'
             value={data.confirmPassword}
             onChange={(e) => updateField('confirmPassword', e.target.value)}
@@ -128,10 +128,10 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           />
           <button
             type='button'
-            onClick={toggleConfirmPasswordVisibility}
+            onClick={togglePasswordVisibility}
             className='absolute top-1/2 right-3 -translate-y-1/2 cursor-pointer text-neutral-500 hover:text-neutral-700'
           >
-            {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
         </div>
         {touched.confirmPassword && errors.confirmPassword && (
