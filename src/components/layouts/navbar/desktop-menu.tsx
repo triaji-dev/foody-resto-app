@@ -16,7 +16,6 @@ import {
 import { MenuIcons } from './menu-icons';
 import { AvatarWithInitials } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
-import { Home } from 'lucide-react';
 
 interface DesktopMenuProps {
   isScrolled?: boolean;
@@ -60,7 +59,7 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
         <DropdownMenuItem
           key={item.label}
           onClick={handleLogout}
-          className='text-destructive focus:text-destructive cursor-pointer'
+          className='cursor-pointer'
         >
           {Icon && <Icon />}
           {item.label}
@@ -86,7 +85,7 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
         <DropdownMenuTrigger asChild>
           <button
             className={cn(
-              'flex items-center gap-3 space-x-2 rounded-md px-3 transition-transform duration-200 hover:scale-102 focus:scale-95 focus:ring-0 focus:outline-none active:scale-95',
+              'flex cursor-pointer items-center gap-3 space-x-2 rounded-md px-3 transition-transform duration-200 hover:scale-102 focus:scale-95 focus:ring-0 focus:outline-none active:scale-95',
               isScrolled ? 'text-foreground' : 'text-white'
             )}
           >
@@ -101,7 +100,7 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
               />
             </div>
 
-            <div className='text-lg-custom cursor-pointer font-semibold transition-transform hover:scale-110'>
+            <div className='text-md-custom cursor-pointer font-bold transition-transform hover:scale-110'>
               {user?.name || 'User'}
             </div>
           </button>
@@ -114,9 +113,9 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
                 src={user?.avatar}
                 alt={user?.name || 'Profile'}
                 name={user?.name}
-                size='md'
+                size='lg'
               />
-              <p className='text-base leading-none font-semibold'>
+              <p className='text-lg-custom leading-none font-bold'>
                 {user?.name || 'User'}
               </p>
             </div>

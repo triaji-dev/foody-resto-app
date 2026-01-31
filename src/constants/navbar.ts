@@ -10,12 +10,12 @@ export interface NavMenuItem {
   className?: string;
 }
 
-// Items for Desktop User Dropdown (Strictly matching design)
+// Items for Desktop User Dropdown
 export const USER_DROPDOWN_ITEMS: NavMenuItem[] = [
   {
     type: 'item',
     label: 'Delivery Address',
-    href: ROUTES.PROFILE, // Assuming profile page has address tab
+    href: ROUTES.PROFILE,
     icon: 'DeliveryAddress',
   },
   { type: 'item', label: 'My Orders', href: ROUTES.ORDERS, icon: 'Orders' },
