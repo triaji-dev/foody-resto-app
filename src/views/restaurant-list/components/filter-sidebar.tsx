@@ -1,7 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useDebounce } from '@/hooks/use-debounce';
 
 interface FilterSectionProps {
   title: string;
@@ -18,11 +21,13 @@ const FilterSection = ({ title, children }: FilterSectionProps) => (
 const CheckboxItem = ({
   label,
   id,
-  defaultChecked = false,
+  checked,
+  onChange,
 }: {
   label: React.ReactNode;
   id: string;
-  defaultChecked?: boolean;
+  checked?: boolean;
+  onChange?: (checked: boolean) => void;
 }) => (
   <label
     htmlFor={id}
@@ -32,7 +37,8 @@ const CheckboxItem = ({
       <input
         type='checkbox'
         id={id}
-        defaultChecked={defaultChecked}
+        checked={checked}
+        onChange={(e) => onChange?.(e.target.checked)}
         className='peer checked:bg-primary checked:border-primary h-5 w-5 appearance-none rounded border border-neutral-400 transition-all'
       />
       <svg
@@ -56,6 +62,46 @@ interface FilterSidebarProps {
 }
 
 export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  // Initialize states from URL
+  const [priceMin, setPriceMin] = useState(searchParams.get('priceMin') || '');
+  const [priceMax, setPriceMax] = useState(searchParams.get('priceMax') || '');
+
+  const debouncedPriceMin = useDebounce(priceMin, 500);
+  const debouncedPriceMax = useDebounce(priceMax, 500);
+
+  const updateFilters = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === null) {
+        params.delete(key);
+      } else {
+        params.set(key, value);
+      }
+    });
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
+  useEffect(() => {
+    updateFilters({
+      priceMin: debouncedPriceMin || null,
+      priceMax: debouncedPriceMax || null,
+    });
+  }, [debouncedPriceMin, debouncedPriceMax]);
+
+  const handleRangeChange = (range: string) => {
+    const currentRange = searchParams.get('range');
+    updateFilters({ range: currentRange === range ? null : range });
+  };
+
+  const handleRatingChange = (rating: string) => {
+    const currentRating = searchParams.get('rating');
+    updateFilters({ rating: currentRating === rating ? null : rating });
+  };
+
   return (
     <aside
       className={cn(
@@ -68,10 +114,30 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
       <h2 className='text-md font-extrabold text-neutral-900'>FILTER</h2>
 
       <FilterSection title='Distance'>
-        <CheckboxItem id='nearby' label='Nearby' defaultChecked />
-        <CheckboxItem id='within-1km' label='Within 1 km' />
-        <CheckboxItem id='within-3km' label='Within 3 km' />
-        <CheckboxItem id='within-5km' label='Within 5 km' />
+        <CheckboxItem
+          id='range-nearby'
+          label='Nearby'
+          checked={searchParams.get('range') === '10'}
+          onChange={() => handleRangeChange('10')}
+        />
+        <CheckboxItem
+          id='range-1km'
+          label='Within 1 km'
+          checked={searchParams.get('range') === '1'}
+          onChange={() => handleRangeChange('1')}
+        />
+        <CheckboxItem
+          id='range-3km'
+          label='Within 3 km'
+          checked={searchParams.get('range') === '3'}
+          onChange={() => handleRangeChange('3')}
+        />
+        <CheckboxItem
+          id='range-5km'
+          label='Within 5 km'
+          checked={searchParams.get('range') === '5'}
+          onChange={() => handleRangeChange('5')}
+        />
       </FilterSection>
 
       <FilterSection title='Price'>
@@ -81,7 +147,9 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
               Rp
             </span>
             <input
-              type='text'
+              type='number'
+              value={priceMin}
+              onChange={(e) => setPriceMin(e.target.value)}
               placeholder='Minimum Price'
               className='focus:ring-primary/20 focus:border-primary placeholder:text-md w-full rounded-lg border border-neutral-300 py-3 pr-4 pl-13 text-sm transition-all focus:ring-2 focus:outline-none'
             />
@@ -91,7 +159,9 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
               Rp
             </span>
             <input
-              type='text'
+              type='number'
+              value={priceMax}
+              onChange={(e) => setPriceMax(e.target.value)}
               placeholder='Maximum Price'
               className='focus:ring-primary/20 focus:border-primary placeholder:text-md w-full rounded-lg border border-neutral-200 py-3 pr-4 pl-13 text-sm transition-all focus:ring-2 focus:outline-none'
             />
@@ -104,6 +174,8 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
           <CheckboxItem
             key={rating}
             id={`rating-${rating}`}
+            checked={searchParams.get('rating') === String(rating)}
+            onChange={() => handleRatingChange(String(rating))}
             label={
               <div className='flex items-center gap-1'>
                 <Star className='h-4 w-4 fill-yellow-400 text-yellow-400' />

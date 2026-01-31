@@ -10,7 +10,6 @@ import type { Restaurant } from '@/types/api';
 import RestaurantCard from '@/components/ui/restaurant-card';
 import SkeletonCard from '@/views/home/components/skeleton-card';
 import { ROUTES } from '@/constants';
-import { error } from 'console';
 
 function Recommended() {
   const router = useRouter();
@@ -36,9 +35,12 @@ function Recommended() {
     : isLoadingBestSellers;
   const error = !showBestSellers ? errorRecommended : errorBestSellers;
 
-  const restaurants: Restaurant[] | undefined = !showBestSellers
-    ? recommendedData
-    : (bestSellersData as any)?.data?.restaurants;
+  // Data is now properly typed:
+  // - recommendedData: { recommendations: Restaurant[] }
+  // - bestSellersData: { restaurants: Restaurant[], pagination: Pagination }
+  const restaurants: Restaurant[] = !showBestSellers
+    ? (recommendedData?.recommendations ?? [])
+    : (bestSellersData?.restaurants ?? []);
 
   return (
     <div>

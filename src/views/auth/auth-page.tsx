@@ -38,6 +38,7 @@ function AuthPage() {
           src='/images/auth-background.png'
           alt='Auth background'
           fill
+          sizes='50vw'
           className='object-cover object-center'
           priority
         />

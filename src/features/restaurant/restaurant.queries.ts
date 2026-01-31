@@ -1,14 +1,17 @@
-import { useQuery } from '@tanstack/react-query';
+'use client';
+
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import apiClient from '@/services/api-client';
+import { restaurantService } from '@/services/restaurant';
 import type {
   Restaurant,
   RestaurantDetail,
   RestaurantFilters,
-  PaginatedResponse,
 } from '@/types/api';
 
-// Query keys for caching
+// ============================================
+// QUERY KEYS - Centralized cache key management
+// ============================================
 export const restaurantKeys = {
   all: ['restaurants'] as const,
   lists: () => [...restaurantKeys.all, 'list'] as const,
@@ -22,52 +25,37 @@ export const restaurantKeys = {
   recommended: () => [...restaurantKeys.all, 'recommended'] as const,
 };
 
-// Get restaurants list with filters
+// ============================================
+// HOOKS - TanStack Query hooks with full states
+// ============================================
+
+/**
+ * Get restaurants list with optional filters
+ * Returns: { data, isLoading, isError, error, isFetching, isSuccess, refetch }
+ */
 export function useRestaurants(filters?: RestaurantFilters) {
   return useQuery({
     queryKey: restaurantKeys.list(filters || {}),
-    queryFn: async (): Promise<PaginatedResponse<Restaurant>> => {
-      const params = new URLSearchParams();
-      if (filters?.location) params.append('location', filters.location);
-      if (filters?.range) params.append('range', String(filters.range));
-      if (filters?.priceMin)
-        params.append('priceMin', String(filters.priceMin));
-      if (filters?.priceMax)
-        params.append('priceMax', String(filters.priceMax));
-      if (filters?.rating) params.append('rating', String(filters.rating));
-      if (filters?.category) params.append('category', filters.category);
-      if (filters?.page) params.append('page', String(filters.page));
-      if (filters?.limit) params.append('limit', String(filters.limit));
-
-      const response = await apiClient.get<PaginatedResponse<Restaurant>>(
-        `/api/resto?${params.toString()}`
-      );
-      return response.data;
+    queryFn: async () => {
+      const response = await restaurantService.getRestaurants(filters);
+      return response.data; // ApiResponse.data = { restaurants, pagination }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 10 * 60 * 1000, // 10 minutes garbage collection
   });
 }
 
-// Get restaurant detail with menus and reviews
+/**
+ * Get restaurant detail with menus and reviews
+ */
 export function useRestaurantDetail(
   id: number,
   options?: { limitMenu?: number; limitReview?: number }
 ) {
   return useQuery({
     queryKey: restaurantKeys.detail(id),
-    queryFn: async (): Promise<RestaurantDetail> => {
-      const params = new URLSearchParams();
-      if (options?.limitMenu)
-        params.append('limitMenu', String(options.limitMenu));
-      if (options?.limitReview)
-        params.append('limitReview', String(options.limitReview));
-
-      const queryString = params.toString();
-      const url = queryString
-        ? `/api/resto/${id}?${queryString}`
-        : `/api/resto/${id}`;
-
-      const response = await apiClient.get<RestaurantDetail>(url);
+    queryFn: async () => {
+      const response = await restaurantService.getRestaurantDetail(id, options);
       return response.data;
     },
     enabled: id > 0,
@@ -75,7 +63,9 @@ export function useRestaurantDetail(
   });
 }
 
-// Get best seller restaurants
+/**
+ * Get best seller restaurants
+ */
 export function useBestSellers(
   page: number = 1,
   limit: number = 20,
@@ -83,29 +73,31 @@ export function useBestSellers(
 ) {
   return useQuery({
     queryKey: [...restaurantKeys.bestSellers(), { page, limit }],
-    queryFn: async (): Promise<PaginatedResponse<Restaurant>> => {
-      const response = await apiClient.get<PaginatedResponse<Restaurant>>(
-        `/api/resto/best-seller?page=${page}&limit=${limit}`
-      );
-      return response.data;
+    queryFn: async () => {
+      const response = await restaurantService.getBestSellers({ page, limit });
+      return response.data; // { restaurants, pagination }
     },
     staleTime: 5 * 60 * 1000,
-    enabled: options?.enabled,
+    enabled: options?.enabled ?? true,
   });
 }
 
-// Search restaurants by name
+/**
+ * Search restaurants by name
+ */
 export function useSearchRestaurants(
   query: string,
   page: number = 1,
   limit: number = 20
 ) {
   return useQuery({
-    queryKey: restaurantKeys.search(query),
-    queryFn: async (): Promise<PaginatedResponse<Restaurant>> => {
-      const response = await apiClient.get<PaginatedResponse<Restaurant>>(
-        `/api/resto/search?q=${encodeURIComponent(query)}&page=${page}&limit=${limit}`
-      );
+    queryKey: [...restaurantKeys.search(query), { page, limit }],
+    queryFn: async () => {
+      const response = await restaurantService.searchRestaurants({
+        q: query,
+        page,
+        limit,
+      });
       return response.data;
     },
     enabled: query.length > 0,
@@ -113,36 +105,40 @@ export function useSearchRestaurants(
   });
 }
 
-// Get nearby restaurants (requires auth)
+/**
+ * Get nearby restaurants (requires auth)
+ */
 export function useNearbyRestaurants(range: number = 10, limit: number = 20) {
   return useQuery({
     queryKey: [...restaurantKeys.nearby(), { range, limit }],
-    queryFn: async (): Promise<PaginatedResponse<Restaurant>> => {
-      const response = await apiClient.get<PaginatedResponse<Restaurant>>(
-        `/api/resto/nearby?range=${range}&limit=${limit}`
-      );
+    queryFn: async () => {
+      const response = await restaurantService.getNearby({ range, limit });
       return response.data;
     },
     staleTime: 5 * 60 * 1000,
+    retry: 1, // Minimize retries for auth-required endpoints
   });
 }
 
-// Get recommended restaurants (requires auth)
+/**
+ * Get recommended restaurants (requires auth)
+ */
 export function useRecommendedRestaurants(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: restaurantKeys.recommended(),
-    queryFn: async (): Promise<Restaurant[]> => {
-      const response = await apiClient.get<any>('/api/resto/recommended');
-      // Handle potential wrapped response { data: [...] }
-      return response.data?.data || response.data;
+    queryFn: async () => {
+      const response = await restaurantService.getRecommended();
+      return response.data; // { recommendations }
     },
     staleTime: 5 * 60 * 1000,
-    enabled: options?.enabled,
-    retry: 1, // Minimize retries on 403 to reduce console noise
+    enabled: options?.enabled ?? true,
+    retry: 1,
   });
 }
 
-// Hook to sync filters with URL params
+// ============================================
+// URL SYNC HOOK - Sync filters with URL params
+// ============================================
 export function useRestaurantFiltersFromURL(): RestaurantFilters {
   const searchParams = useSearchParams();
 

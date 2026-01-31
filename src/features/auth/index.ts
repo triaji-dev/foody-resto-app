@@ -11,8 +11,9 @@ export {
 export {
   setCredentials,
   setUser,
+  setToken,
   logout,
   updateUser,
-  initializeAuth,
+  restoreAuth,
 } from './auth.slice';
 export { default as authReducer } from './auth.slice';

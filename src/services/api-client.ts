@@ -30,9 +30,8 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle global errors here (e.g., 401 Unauthorized)
-    // Handle global errors here (e.g., 401 Unauthorized)
-    if (error.response?.status === 401) {
+    // Handle global errors here (e.g., 401 Unauthorized, 403 Forbidden)
+    if (error.response?.status === 401 || error.response?.status === 403) {
       // Clear token and redirect to login if needed
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');

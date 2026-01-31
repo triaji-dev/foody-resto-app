@@ -4,30 +4,23 @@ import { FilterSidebar } from './components/filter-sidebar';
 import { RestaurantGrid } from './components/restaurant-grid';
 import type { Restaurant } from '@/types/api';
 import { GeolocationProvider } from '@/components/providers/geolocation-provider';
+import { Suspense } from 'react';
 
 import { ListFilter } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-// Dummy data for the restaurant list
-const DUMMY_RESTAURANTS: Restaurant[] = Array(8)
-  .fill(null)
-  .map((_, i) => ({
-    id: i + 1,
-    name: 'Burger King',
-    star: 4.9,
-    place: 'Jakarta Selatan',
-    logo: '/icons/bk-logo.png',
-    images: ['/icons/bk-logo.png'],
-    reviewCount: 120,
-    menuCount: 45,
-    priceRange: {
-      min: 20000,
-      max: 150000,
-    },
-    description: 'Fast food restaurant chain',
-  }));
+import {
+  useRestaurants,
+  useRestaurantFiltersFromURL,
+} from '@/features/restaurant/restaurant.queries';
 
 export default function RestaurantListPage() {
+  const filters = useRestaurantFiltersFromURL();
+  const { data, isLoading, isError } = useRestaurants(filters);
+
+  // Data is now RestaurantListData { restaurants, pagination }
+  const restaurants = data?.restaurants ?? [];
+
   return (
     <GeolocationProvider autoRequest={true}>
       <div className='min-h-screen bg-neutral-50 pt-16 pb-16 md:pt-20'>
@@ -50,7 +43,11 @@ export default function RestaurantListPage() {
                 </SheetTrigger>
                 <SheetContent side='left' className='w-[320px] p-0'>
                   <div className='h-full overflow-y-auto px-6 py-10'>
-                    <FilterSidebar isSheet />
+                    <Suspense
+                      fallback={<div className='p-6'>Loading filters...</div>}
+                    >
+                      <FilterSidebar isSheet />
+                    </Suspense>
                   </div>
                 </SheetContent>
               </Sheet>
@@ -58,12 +55,41 @@ export default function RestaurantListPage() {
 
             {/* Desktop Sidebar Filter */}
             <div className='hidden h-fit lg:sticky lg:top-24 lg:block'>
-              <FilterSidebar />
+              <Suspense
+                fallback={
+                  <div className='h-64 w-72 animate-pulse rounded-2xl bg-white p-4' />
+                }
+              >
+                <FilterSidebar />
+              </Suspense>
             </div>
 
             {/* Main Content */}
             <div className='flex-1'>
-              <RestaurantGrid restaurants={DUMMY_RESTAURANTS} />
+              {isLoading ? (
+                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5'>
+                  {Array(4)
+                    .fill(0)
+                    .map((_, i) => (
+                      <div
+                        key={i}
+                        className='h-40 animate-pulse rounded-2xl bg-neutral-200'
+                      />
+                    ))}
+                </div>
+              ) : isError ? (
+                <div className='py-12 text-center'>
+                  <p className='text-neutral-500'>
+                    Failed to load restaurants.
+                  </p>
+                </div>
+              ) : restaurants.length === 0 ? (
+                <div className='py-12 text-center'>
+                  <p className='text-neutral-500'>No restaurants found.</p>
+                </div>
+              ) : (
+                <RestaurantGrid restaurants={restaurants} />
+              )}
             </div>
           </div>
         </div>

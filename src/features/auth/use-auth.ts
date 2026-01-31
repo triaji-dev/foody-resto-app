@@ -3,8 +3,12 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { useProfile } from './auth.queries';
-import { setUser, logout, initializeAuth } from './auth.slice';
+import { setUser, logout, restoreAuth } from './auth.slice';
 
+/**
+ * Custom hook for authentication state management
+ * Combines Redux state with TanStack Query for profile fetching
+ */
 export const useAuth = () => {
   const dispatch = useAppDispatch();
   const { token, user, isAuthenticated } = useAppSelector(
@@ -15,12 +19,14 @@ export const useAuth = () => {
   const {
     data: profileData,
     isLoading,
+    isError,
+    error,
     refetch,
   } = useProfile(isAuthenticated && !user);
 
-  // Initialize auth state from localStorage on mount
+  // Restore auth state from cookies on mount
   useEffect(() => {
-    dispatch(initializeAuth());
+    dispatch(restoreAuth());
   }, [dispatch]);
 
   // Update user in Redux when profile is fetched
@@ -43,10 +49,15 @@ export const useAuth = () => {
   };
 
   return {
+    // State
     isAuthenticated,
     user,
     token,
+    // Loading states
     isLoading,
+    isError,
+    error,
+    // Actions
     logout: handleLogout,
     refreshProfile,
   };
