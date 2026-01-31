@@ -58,7 +58,7 @@ export default function CartSheet() {
             <ShoppingCart className='h-5 w-5' />
             Your Cart
             {itemCount > 0 && (
-              <span className='bg-primary text-primary-foreground rounded-full px-2 py-0.5 text-xs'>
+              <span className='bg-primary text-primary-foreground text-xs-custom rounded-full px-2 py-0.5'>
                 {itemCount}
               </span>
             )}
@@ -117,7 +117,7 @@ export default function CartSheet() {
                   {/* Details */}
                   <div className='flex-1'>
                     <h4 className='line-clamp-1 font-semibold'>{item.name}</h4>
-                    <p className='text-primary text-sm font-medium'>
+                    <p className='text-primary text-sm-custom font-medium'>
                       {formatPrice(item.price)}
                     </p>
 
@@ -137,7 +137,7 @@ export default function CartSheet() {
                       >
                         <Minus className='h-3 w-3' />
                       </Button>
-                      <span className='w-8 text-center text-sm font-medium'>
+                      <span className='text-sm-custom w-8 text-center font-medium'>
                         {item.quantity}
                       </span>
                       <Button
@@ -165,7 +165,7 @@ export default function CartSheet() {
                     >
                       <X className='h-4 w-4' />
                     </Button>
-                    <span className='text-sm font-semibold'>
+                    <span className='text-sm-custom font-semibold'>
                       {formatPrice(item.price * item.quantity)}
                     </span>
                   </div>
@@ -176,7 +176,7 @@ export default function CartSheet() {
             {/* Footer */}
             <div className='space-y-4 border-t pt-4'>
               <Separator />
-              <div className='flex items-center justify-between text-lg font-bold'>
+              <div className='text-lg-custom flex items-center justify-between font-bold'>
                 <span>Total</span>
                 <span className='text-primary'>{formatPrice(total)}</span>
               </div>

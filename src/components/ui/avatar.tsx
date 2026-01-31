@@ -78,9 +78,9 @@ export const AvatarWithInitials = ({
   isScrolled = false,
 }: AvatarProps & { name?: string }) => {
   const sizeClasses = {
-    sm: 'h-6 w-6 text-xs',
-    md: 'h-10 w-10 text-sm',
-    lg: 'h-12 w-12 text-lg',
+    sm: 'h-6 w-6 text-xs-custom',
+    md: 'h-10 w-10 text-sm-custom',
+    lg: 'h-12 w-12 text-lg-custom',
   };
 
   const initials = getInitials(name);

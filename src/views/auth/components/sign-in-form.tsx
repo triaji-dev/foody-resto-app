@@ -36,7 +36,9 @@ export function SignInForm() {
           )}
         />
         {touched.email && errors.email && (
-          <p className='text-xs font-medium text-red-500'>{errors.email}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.email}
+          </p>
         )}
       </div>
 
@@ -50,7 +52,7 @@ export function SignInForm() {
             onChange={(e) => updateField('password', e.target.value)}
             onBlur={() => handleBlur('password')}
             className={cn(
-              'h-12 md:h-14 pr-10',
+              'h-12 pr-10 md:h-14',
               touched.password && errors.password && 'border-red-500'
             )}
           />
@@ -63,7 +65,9 @@ export function SignInForm() {
           </button>
         </div>
         {touched.password && errors.password && (
-          <p className='text-xs font-medium text-red-500'>{errors.password}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.password}
+          </p>
         )}
       </div>
 
@@ -78,7 +82,7 @@ export function SignInForm() {
         />
         <label
           htmlFor='rememberMe'
-          className='cursor-pointer text-sm text-neutral-600'
+          className='text-sm-custom cursor-pointer text-neutral-600'
         >
           Remember Me
         </label>
@@ -87,7 +91,9 @@ export function SignInForm() {
       {/* API Error Message */}
       {error && (
         <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
-          <p className='text-sm text-red-600'>Invalid email or password</p>
+          <p className='text-sm-custom text-red-600'>
+            Invalid email or password
+          </p>
         </div>
       )}
 

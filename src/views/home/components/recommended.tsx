@@ -42,9 +42,9 @@ function Recommended() {
   return (
     <div>
       <div className='mb-8 flex flex-row items-center justify-between px-4 sm:px-[clamp(1rem,8.33vw,7.5rem)]'>
-        <h1 className='display-md-extrabold'>Recommended</h1>
+        <h1 className='display-md font-extrabold'>Recommended</h1>
         <p
-          className='text-lg-extrabold text-primary cursor-pointer hover:underline'
+          className='text-primary text-lg-custom cursor-pointer font-extrabold hover:underline'
           onClick={() => router.push(ROUTES.RESTAURANTS)}
         >
           See All

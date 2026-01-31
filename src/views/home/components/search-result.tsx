@@ -52,20 +52,20 @@ function SearchResult({
     <div ref={scrollRef}>
       <div className='mx-auto mb-8 flex max-w-7xl flex-row items-center justify-between px-4 sm:px-6 lg:px-4'>
         <div className='flex-1'>
-          <h1 className='display-md-extrabold'>Search</h1>
+          <h1 className='display-md font-extrabold'>Search</h1>
         </div>
 
         <div className='flex items-center gap-4'>
           {onClearSearch && (
             <button
               onClick={onClearSearch}
-              className='text-lg-extrabold cursor-pointer text-neutral-600 hover:underline'
+              className='text-lg-custom cursor-pointer font-extrabold text-neutral-600 hover:underline'
             >
               Close Search
             </button>
           )}
           <p
-            className='text-lg-extrabold text-primary cursor-pointer hover:underline'
+            className='text-primary text-lg-custom cursor-pointer font-extrabold hover:underline'
             onClick={() => router.push(ROUTES.RESTAURANTS)}
           >
             See All
@@ -85,11 +85,11 @@ function SearchResult({
       <div className='mx-auto flex max-w-7xl flex-col gap-6 px-4 pb-10 sm:px-6 lg:px-4'>
         {searchQuery && (
           <div>
-            <h1 className='display-md-extrabold'>
+            <h1 className='display-md font-extrabold'>
               Results for '{searchQuery}'
             </h1>
             {!isLoading && (restaurants.length > 0 || menus.length > 0) && (
-              <p className='mt-1 text-sm text-gray-600'>
+              <p className='text-sm-custom mt-1 text-gray-600'>
                 Found {totalRestaurants + totalMenus} results
                 {restaurants.length > 0 &&
                   ` • ${restaurants.length} restaurants`}
@@ -114,7 +114,7 @@ function SearchResult({
             <p className='text-red-500'>Failed to search</p>
             <button
               onClick={refetchAll}
-              className='mt-2 text-sm text-blue-600 hover:underline'
+              className='text-sm-custom mt-2 text-blue-600 hover:underline'
             >
               Try again
             </button>
@@ -124,7 +124,7 @@ function SearchResult({
         {/* Restaurant Results */}
         {restaurants.length > 0 && (
           <div className='mb-8'>
-            <h2 className='mb-4 text-xl font-bold text-gray-900'>
+            <h2 className='text-xl-custom mb-4 font-bold text-gray-900'>
               Restaurants
             </h2>
             <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
@@ -144,7 +144,9 @@ function SearchResult({
         {/* Menu Results */}
         {menus.length > 0 && (
           <div className='mb-8'>
-            <h2 className='mb-4 text-xl font-bold text-gray-900'>Menus</h2>
+            <h2 className='text-xl-custom mb-4 font-bold text-gray-900'>
+              Menus
+            </h2>
             <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
               {menus.map((menu) => (
                 <MenuCard
@@ -205,7 +207,9 @@ function SearchResult({
         {/* No More Data Message */}
         {!hasMore && (restaurants.length > 0 || menus.length > 0) && (
           <div className='mt-4 text-center'>
-            <p className='text-sm text-gray-500'>No more results to load</p>
+            <p className='text-sm-custom text-gray-500'>
+              No more results to load
+            </p>
           </div>
         )}
       </div>

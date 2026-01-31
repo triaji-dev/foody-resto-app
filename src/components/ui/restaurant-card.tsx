@@ -28,14 +28,14 @@ function RestaurantCard({
   const getTextSize = () => {
     if (isMobile)
       return {
-        name: 'text-md font-extrabold',
-        rating: 'text-sm',
-        location: 'text-sm text-gray-600',
+        name: 'text-md-custom font-extrabold',
+        rating: 'text-sm-custom',
+        location: 'text-sm-custom text-gray-600',
       };
     return {
-      name: 'text-lg font-extrabold',
-      rating: 'text-md',
-      location: 'text-md text-gray-600',
+      name: 'text-lg-custom font-extrabold',
+      rating: 'text-md-custom',
+      location: 'text-md-custom text-gray-600',
     };
   };
 

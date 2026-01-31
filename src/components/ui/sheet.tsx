@@ -72,7 +72,7 @@ function SheetContent({
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className='absolute top-4 -right-12 flex h-8 w-8 items-center justify-center rounded-full bg-white text-black shadow-md transition-opacity hover:opacity-100 focus:ring-2 focus:ring-black focus:outline-none disabled:pointer-events-none cursor-pointer'>
+        <SheetPrimitive.Close className='absolute top-4 -right-12 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white text-black shadow-md transition-opacity hover:opacity-100 focus:ring-2 focus:ring-black focus:outline-none disabled:pointer-events-none'>
           <XIcon className='h-4 w-4' />
           <span className='sr-only'>Close</span>
         </SheetPrimitive.Close>
@@ -121,7 +121,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot='sheet-description'
-      className={cn('text-muted-foreground text-sm', className)}
+      className={cn('text-muted-foreground text-sm-custom', className)}
       {...props}
     />
   );

@@ -75,7 +75,7 @@ function Navbar() {
                 filter: useScrolledStyles ? 'none' : 'brightness(0) invert(1)',
               }}
             />
-            <span className='display-md-extrabold hidden md:block'>Foody</span>
+            <span className='display-md font-extrabold hidden md:block'>Foody</span>
           </div>
         </Link>
 

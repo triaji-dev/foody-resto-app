@@ -53,13 +53,13 @@ function AuthPage() {
             <TabsList className='grid h-full w-full grid-cols-2 gap-2 rounded-xl bg-neutral-100 p-1.5 md:p-2'>
               <TabsTrigger
                 value='signin'
-                className='md:text-md h-9 text-sm md:h-10'
+                className='md:text-md-custom text-sm-custom h-9 md:h-10'
               >
                 Sign in
               </TabsTrigger>
               <TabsTrigger
                 value='signup'
-                className='md:text-md h-9 text-sm md:h-10'
+                className='md:text-md-custom text-sm-custom h-9 md:h-10'
               >
                 Sign up
               </TabsTrigger>

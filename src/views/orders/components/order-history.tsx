@@ -128,11 +128,11 @@ export default function OrderHistory() {
                           <div className='flex-1'>
                             {/* Order ID and Date */}
                             <div className='mb-2 flex items-center gap-3'>
-                              <span className='font-mono text-sm font-medium'>
+                              <span className='text-sm-custom font-mono font-medium'>
                                 {order.transactionId}
                               </span>
                               <span
-                                className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${statusConfig.color}`}
+                                className={`text-xs-custom flex items-center gap-1 rounded-full px-2 py-0.5 font-medium ${statusConfig.color}`}
                               >
                                 {statusConfig.icon}
                                 {statusConfig.label}
@@ -145,12 +145,12 @@ export default function OrderHistory() {
                             </h4>
 
                             {/* Items */}
-                            <p className='text-muted-foreground text-sm'>
+                            <p className='text-muted-foreground text-sm-custom'>
                               {order.items.length} item(s)
                             </p>
 
                             {/* Date */}
-                            <p className='text-muted-foreground mt-2 text-xs'>
+                            <p className='text-muted-foreground text-xs-custom mt-2'>
                               {dayjs(order.createdAt).format(
                                 'DD MMM YYYY, HH:mm'
                               )}
@@ -159,7 +159,7 @@ export default function OrderHistory() {
 
                           {/* Total */}
                           <div className='text-right'>
-                            <p className='text-primary text-lg font-bold'>
+                            <p className='text-primary text-lg-custom font-bold'>
                               {formatPrice(order.totalAmount)}
                             </p>
                           </div>
@@ -180,7 +180,7 @@ export default function OrderHistory() {
                     >
                       Previous
                     </Button>
-                    <span className='text-muted-foreground text-sm'>
+                    <span className='text-muted-foreground text-sm-custom'>
                       Page {currentPage} of {meta.totalPages}
                     </span>
                     <Button

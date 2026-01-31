@@ -35,7 +35,7 @@ export default function RestaurantListPage() {
               <Sheet>
                 <SheetTrigger asChild>
                   <button className='flex w-full cursor-pointer items-center justify-between rounded-xl bg-white p-4 shadow-[0px_0px_20px_0px_rgba(203,202,202,0.25)] transition-all active:scale-95'>
-                    <span className='text-md font-extrabold text-neutral-900'>
+                    <span className='text-md-custom font-extrabold text-neutral-900'>
                       FILTER
                     </span>
                     <ListFilter className='h-5 w-5 text-neutral-900' />

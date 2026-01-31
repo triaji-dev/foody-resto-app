@@ -28,15 +28,15 @@ export default function MenuCard({ menu, onClick }: MenuCardProps) {
           <h4 className='group-hover:text-primary line-clamp-1 text-base font-bold transition-colors'>
             {menu.name}
           </h4>
-          <p className='mb-1 line-clamp-1 text-xs text-neutral-500'>
+          <p className='text-xs-custom mb-1 line-clamp-1 text-neutral-500'>
             {menu.category}
           </p>
-          <p className='line-clamp-2 text-xs text-neutral-400'>
+          <p className='text-xs-custom line-clamp-2 text-neutral-400'>
             {menu.description}
           </p>
         </div>
         <div className='mt-2 flex items-center justify-between'>
-          <span className='text-sm font-semibold'>
+          <span className='text-sm-custom font-semibold'>
             {new Intl.NumberFormat('id-ID', {
               style: 'currency',
               currency: 'IDR',

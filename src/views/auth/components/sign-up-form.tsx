@@ -43,7 +43,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           )}
         />
         {touched.name && errors.name && (
-          <p className='text-xs font-medium text-red-500'>{errors.name}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.name}
+          </p>
         )}
       </div>
 
@@ -61,7 +63,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           )}
         />
         {touched.email && errors.email && (
-          <p className='text-xs font-medium text-red-500'>{errors.email}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.email}
+          </p>
         )}
       </div>
 
@@ -79,7 +83,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           )}
         />
         {touched.phone && errors.phone && (
-          <p className='text-xs font-medium text-red-500'>{errors.phone}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.phone}
+          </p>
         )}
       </div>
 
@@ -106,7 +112,9 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           </button>
         </div>
         {touched.password && errors.password && (
-          <p className='text-xs font-medium text-red-500'>{errors.password}</p>
+          <p className='text-xs-custom font-medium text-red-500'>
+            {errors.password}
+          </p>
         )}
       </div>
 
@@ -135,7 +143,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
           </button>
         </div>
         {touched.confirmPassword && errors.confirmPassword && (
-          <p className='text-xs font-medium text-red-500'>
+          <p className='text-xs-custom font-medium text-red-500'>
             {errors.confirmPassword}
           </p>
         )}
@@ -144,7 +152,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
       {/* API Error Message */}
       {submitError && (
         <div className='rounded-lg border border-red-200 bg-red-50 p-3'>
-          <p className='text-sm text-red-600'>{submitError}</p>
+          <p className='text-sm-custom text-red-600'>{submitError}</p>
         </div>
       )}
 

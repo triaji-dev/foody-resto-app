@@ -26,19 +26,19 @@ function Footer() {
                     'brightness(0) saturate(100%) invert(18%) sepia(97%) saturate(4456%) hue-rotate(354deg) brightness(95%) contrast(94%)',
                 }}
               />
-              <span className='display-md-extrabold text-white'>
+              <span className='display-md font-extrabold text-white'>
                 {FOOTER_BRAND.name}
               </span>
             </div>
 
             {/* Brand Description */}
-            <p className='text-md max-w-sm leading-relaxed text-neutral-300'>
+            <p className='text-md-custom max-w-sm leading-relaxed text-neutral-300'>
               {FOOTER_BRAND.description}
             </p>
 
             {/* Social Media Section */}
             <div className='space-y-4'>
-              <h3 className='text-lg-semibold text-white'>
+              <h3 className='text-lg-custom font-semibold text-white'>
                 Follow on Social Media
               </h3>
               <div className='flex gap-4'>
@@ -67,7 +67,7 @@ function Footer() {
           <div className='grid grid-cols-2 gap-8'>
             {FOOTER_NAV_SECTIONS.map((section) => (
               <div key={section.title} className='space-y-6'>
-                <h3 className='text-md-extrabold text-white'>
+                <h3 className='text-md-custom font-extrabold text-white'>
                   {section.title}
                 </h3>
                 <nav className='space-y-3'>
@@ -75,7 +75,7 @@ function Footer() {
                     <Link
                       key={link.label}
                       href={link.href}
-                      className='text-md text-neutral-25 hover:text-primary block transition-colors'
+                      className='text-md-custom text-neutral-25 hover:text-primary block transition-colors'
                     >
                       {link.label}
                     </Link>

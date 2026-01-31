@@ -56,7 +56,7 @@ export default function MenuItem({ menu, onAddToCart }: MenuItemProps) {
           className='object-cover transition-transform duration-300 group-hover:scale-105'
         />
         {menu.isBestSeller && (
-          <div className='absolute top-2 left-2 rounded-full bg-orange-500 px-2 py-1 text-xs font-semibold text-white'>
+          <div className='text-xs-custom absolute top-2 left-2 rounded-full bg-orange-500 px-2 py-1 font-semibold text-white'>
             Best Seller
           </div>
         )}
@@ -65,22 +65,22 @@ export default function MenuItem({ menu, onAddToCart }: MenuItemProps) {
       <CardContent className='p-4'>
         {/* Name and category */}
         <div className='mb-2'>
-          <h4 className='line-clamp-1 text-lg font-bold'>{menu.name}</h4>
+          <h4 className='text-lg-custom line-clamp-1 font-bold'>{menu.name}</h4>
           {menu.category && (
-            <span className='text-muted-foreground text-xs capitalize'>
+            <span className='text-muted-foreground text-xs-custom capitalize'>
               {menu.category}
             </span>
           )}
         </div>
 
         {/* Description */}
-        <p className='text-muted-foreground mb-3 line-clamp-2 text-sm'>
+        <p className='text-muted-foreground text-sm-custom mb-3 line-clamp-2'>
           {menu.description || 'No description available'}
         </p>
 
         {/* Price and actions */}
         <div className='flex items-center justify-between'>
-          <span className='text-primary text-lg font-bold'>
+          <span className='text-primary text-lg-custom font-bold'>
             {formatPrice(menu.price)}
           </span>
 
@@ -97,7 +97,7 @@ export default function MenuItem({ menu, onAddToCart }: MenuItemProps) {
                 >
                   <Minus className='h-3 w-3' />
                 </Button>
-                <span className='w-6 text-center text-sm font-medium'>
+                <span className='text-sm-custom w-6 text-center font-medium'>
                   {quantity}
                 </span>
                 <Button

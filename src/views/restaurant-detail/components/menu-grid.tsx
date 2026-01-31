@@ -77,7 +77,7 @@ export default function MenuGrid({
       </Tabs>
 
       {/* Show count */}
-      <p className='text-muted-foreground text-sm'>
+      <p className='text-muted-foreground text-sm-custom'>
         Showing {filteredMenus.length} of {menus.length} items
       </p>
     </div>

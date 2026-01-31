@@ -101,7 +101,7 @@ function DesktopMenu({ isScrolled = false }: DesktopMenuProps) {
               />
             </div>
 
-            <div className='text-lg-semibold cursor-pointer transition-transform hover:scale-110'>
+            <div className='text-lg-custom cursor-pointer font-semibold transition-transform hover:scale-110'>
               {user?.name || 'User'}
             </div>
           </button>

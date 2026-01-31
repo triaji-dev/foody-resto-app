@@ -143,7 +143,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
               <div className='space-y-2'>
                 <label
                   htmlFor='deliveryAddress'
-                  className='flex items-center gap-2 text-sm font-medium'
+                  className='text-sm-custom flex items-center gap-2 font-medium'
                 >
                   <MapPin className='h-4 w-4' />
                   Delivery Address *
@@ -158,7 +158,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
                   className={errors.deliveryAddress ? 'border-red-500' : ''}
                 />
                 {errors.deliveryAddress && (
-                  <p className='text-xs text-red-500'>
+                  <p className='text-xs-custom text-red-500'>
                     {errors.deliveryAddress}
                   </p>
                 )}
@@ -168,7 +168,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
               <div className='space-y-2'>
                 <label
                   htmlFor='phone'
-                  className='flex items-center gap-2 text-sm font-medium'
+                  className='text-sm-custom flex items-center gap-2 font-medium'
                 >
                   <Phone className='h-4 w-4' />
                   Phone Number (Optional)
@@ -188,7 +188,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
               <div className='space-y-2'>
                 <label
                   htmlFor='paymentMethod'
-                  className='flex items-center gap-2 text-sm font-medium'
+                  className='text-sm-custom flex items-center gap-2 font-medium'
                 >
                   <CreditCard className='h-4 w-4' />
                   Payment Method
@@ -207,7 +207,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
               <div className='space-y-2'>
                 <label
                   htmlFor='notes'
-                  className='flex items-center gap-2 text-sm font-medium'
+                  className='text-sm-custom flex items-center gap-2 font-medium'
                 >
                   <FileText className='h-4 w-4' />
                   Order Notes (Optional)
@@ -219,7 +219,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
                   value={formData.notes}
                   onChange={handleChange}
                   disabled={checkoutMutation.isPending}
-                  className='border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
+                  className='border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring text-sm-custom flex min-h-[80px] w-full rounded-md border px-3 py-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'
                 />
               </div>
 
@@ -251,7 +251,10 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
           </CardHeader>
           <CardContent className='space-y-4'>
             {items.map((item) => (
-              <div key={item.id} className='flex justify-between text-sm'>
+              <div
+                key={item.id}
+                className='text-sm-custom flex justify-between'
+              >
                 <span>
                   {item.name} x{item.quantity}
                 </span>

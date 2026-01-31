@@ -13,7 +13,7 @@ interface FilterSectionProps {
 
 const FilterSection = ({ title, children }: FilterSectionProps) => (
   <div className='flex flex-col gap-[10px] border-b border-neutral-100 pb-4 last:border-none'>
-    <h3 className='text-lg font-extrabold text-neutral-900'>{title}</h3>
+    <h3 className='text-lg-custom font-extrabold text-neutral-900'>{title}</h3>
     <div className='flex flex-col gap-3'>{children}</div>
   </div>
 );
@@ -51,7 +51,7 @@ const CheckboxItem = ({
         <path strokeLinecap='round' strokeLinejoin='round' d='M5 13l4 4L19 7' />
       </svg>
     </div>
-    <span className='text-md text-neutral-600 transition-colors group-hover:text-neutral-900'>
+    <span className='text-md-custom text-neutral-600 transition-colors group-hover:text-neutral-900'>
       {label}
     </span>
   </label>
@@ -111,7 +111,7 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
           : 'rounded-2xl bg-white p-4 shadow-[0px_0px_20px_0px_rgba(203,202,202,0.25)] lg:w-72'
       )}
     >
-      <h2 className='text-md font-extrabold text-neutral-900'>FILTER</h2>
+      <h2 className='text-md-custom font-extrabold text-neutral-900'>FILTER</h2>
 
       <FilterSection title='Distance'>
         <CheckboxItem
@@ -151,7 +151,7 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
               value={priceMin}
               onChange={(e) => setPriceMin(e.target.value)}
               placeholder='Minimum Price'
-              className='focus:ring-primary/20 focus:border-primary placeholder:text-md w-full rounded-lg border border-neutral-300 py-3 pr-4 pl-13 text-sm transition-all focus:ring-2 focus:outline-none'
+              className='focus:ring-primary/20 focus:border-primary placeholder:text-md-custom text-sm-custom w-full rounded-lg border border-neutral-300 py-3 pr-4 pl-13 transition-all focus:ring-2 focus:outline-none'
             />
           </div>
           <div className='relative'>
@@ -163,7 +163,7 @@ export function FilterSidebar({ isSheet = false }: FilterSidebarProps) {
               value={priceMax}
               onChange={(e) => setPriceMax(e.target.value)}
               placeholder='Maximum Price'
-              className='focus:ring-primary/20 focus:border-primary placeholder:text-md w-full rounded-lg border border-neutral-200 py-3 pr-4 pl-13 text-sm transition-all focus:ring-2 focus:outline-none'
+              className='focus:ring-primary/20 focus:border-primary placeholder:text-md-custom text-sm-custom w-full rounded-lg border border-neutral-200 py-3 pr-4 pl-13 transition-all focus:ring-2 focus:outline-none'
             />
           </div>
         </div>

@@ -138,10 +138,10 @@ function MobileMenu({ isScrolled = false }: MobileMenuProps) {
                     className='mr-2'
                   />
                   <div className='flex flex-col space-y-1'>
-                    <p className='text-sm leading-none font-medium'>
+                    <p className='text-sm-custom leading-none font-medium'>
                       {user?.name || 'User'}
                     </p>
-                    <p className='text-muted-foreground text-xs leading-none'>
+                    <p className='text-muted-foreground text-xs-custom leading-none'>
                       {user?.email || 'user@example.com'}
                     </p>
                   </div>

@@ -31,10 +31,10 @@ function Hero({ onSearch, onClearSearch }: HeroProps) {
       ></div>
       <div className='relative z-10 mx-auto max-w-4xl space-y-10 px-6 text-center text-white'>
         <div className='animate-in fade-in slide-in-from-bottom-8 duration-1000'>
-          <h1 className='display-lg-extrabold sm:display-2xl-extrabold mb-2'>
+          <h1 className='display-lg sm:display-2xl mb-2 font-extrabold'>
             Explore Culinary Experiences
           </h1>
-          <p className='text-lg-bold sm:display-xs-bold text-white opacity-90 delay-300'>
+          <p className='sm:display-xs text-lg-custom font-bold text-white opacity-90 delay-300'>
             Search and refine your choice to discover the perfect restaurant.
           </p>
         </div>

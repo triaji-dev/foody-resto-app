@@ -40,9 +40,9 @@ function HomeMenu() {
   const { isMobile, isTablet } = useScreenSize();
 
   const getTextSize = () => {
-    if (isMobile) return 'text-sm-bold';
-    if (isTablet) return 'text-md-bold';
-    return 'text-lg-bold';
+    if (isMobile) return 'text-sm-custom font-bold';
+    if (isTablet) return 'text-md-custom font-bold';
+    return 'text-lg-custom font-bold';
   };
 
   const getIconSize = () => {
