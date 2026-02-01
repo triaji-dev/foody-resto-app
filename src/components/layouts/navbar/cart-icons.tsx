@@ -1,27 +1,37 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ROUTES } from '@/constants';
 import Image from 'next/image';
+import { ROUTES } from '@/constants';
+import { useAuth } from '@/features/auth';
+import { useCart } from '@/features/cart/useCart';
 
 interface NavIconProps {
   icon: React.ReactElement;
   onClick: () => void;
   label: string;
+  badge?: number;
 }
 
-const NavIcon = ({ icon, onClick, label }: NavIconProps) => (
+const NavIcon = ({ icon, onClick, label, badge }: NavIconProps) => (
   <div
     className='group relative flex cursor-pointer items-center justify-center transition-transform hover:scale-110 active:scale-95'
     onClick={onClick}
     title={label}
   >
     {icon}
+    {badge ? (
+      <span className='absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm sm:h-5 sm:w-5 sm:text-xs'>
+        {badge > 99 ? '99+' : badge}
+      </span>
+    ) : null}
   </div>
 );
 
 export const CartIcons = ({ isScrolled }: { isScrolled?: boolean }) => {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  const { totalItems } = useCart(isAuthenticated);
 
   const navigationItems = [
     {
@@ -41,6 +51,7 @@ export const CartIcons = ({ isScrolled }: { isScrolled?: boolean }) => {
       ),
       route: ROUTES.CART,
       label: 'Cart',
+      badge: totalItems,
     },
   ];
 
@@ -52,6 +63,7 @@ export const CartIcons = ({ isScrolled }: { isScrolled?: boolean }) => {
           icon={item.icon}
           onClick={() => router.push(item.route)}
           label={item.label}
+          badge={item.badge}
         />
       ))}
     </div>

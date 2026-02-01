@@ -51,42 +51,42 @@ export default function RestaurantInfo({
     <section className='flex items-center justify-between py-6'>
       <div className='flex items-center gap-4'>
         {/* Restaurant Logo */}
-        <div className='relative h-16 w-16 overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm md:h-20 md:w-20'>
+        <div className='relative h-20 w-20 overflow-hidden rounded-full border border-neutral-200 bg-white shadow-sm md:h-[120px] md:w-[120px]'>
           <Image
             src={logo || '/images/restaurant-placeholder.jpg'}
             alt={`${name} logo`}
             fill
-            sizes='80px'
-            className='object-contain p-1'
+            sizes='(max-width: 768px) 80px, 120px'
+            className='object-cover'
           />
         </div>
 
         {/* Restaurant Details */}
         <div className='flex flex-col gap-1'>
-          <h1 className='display-sm md:display-md font-extrabold text-neutral-900'>
+          <h1 className='md:display-md text-lg font-extrabold text-neutral-900'>
             {name}
           </h1>
           <div className='flex items-center gap-2'>
             <Star className='h-4 w-4 fill-yellow-400 text-yellow-400' />
-            <span className='text-sm-custom font-medium text-neutral-700'>
+            <span className='text-sm-custom md:text-md-custom font-medium text-neutral-700'>
               {star.toFixed(1)}
             </span>
           </div>
-          <p className='text-sm-custom text-neutral-600'>
+          <p className='md:text-md text-sm text-neutral-600'>
             {place}
             {distance && ` · ${distance}`}
           </p>
         </div>
       </div>
 
-      {/* Share Button */}
       <Button
         variant='outline'
-        size='sm'
+        size='none'
         onClick={handleShare}
-        className='gap-2 rounded-full px-4'
+        className='text-md-custom gap-2 rounded-full px-3 py-3 font-bold transition-all duration-200 ease-in-out hover:scale-105 md:px-7.5 md:py-3'
       >
-        <Share2 className='h-4 w-4' />
+        <Share2 className='h-5 w-5 shrink-0 md:hidden' />
+        <Share2 className='hidden h-6 w-6 shrink-0 md:block' />
         <span className='hidden sm:inline'>Share</span>
       </Button>
     </section>

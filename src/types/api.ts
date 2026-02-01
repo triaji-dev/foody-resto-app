@@ -101,6 +101,7 @@ export interface Restaurant {
 export interface Menu {
   id: number;
   name: string;
+  foodName?: string; // API sometimes returns foodName instead of name
   description: string;
   price: number;
   image: string;
@@ -115,6 +116,8 @@ export interface RestaurantDetail extends Restaurant {
 
 export interface RestaurantFilters {
   location?: string;
+  lat?: number;
+  long?: number; // Backend usually expects 'long' or 'lng' - checking usage
   range?: number;
   priceMin?: number;
   priceMax?: number;
@@ -235,6 +238,7 @@ export interface Review {
   id: number;
   userId?: number;
   userName?: string;
+  userAvatar?: string; // API sometimes returns avatar at top level
   restaurantId?: number;
   transactionId?: string;
   star: number; // 1-5

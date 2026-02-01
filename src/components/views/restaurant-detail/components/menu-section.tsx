@@ -36,7 +36,7 @@ export default function MenuSection({
 
   const handleCategoryChange = (category: CategoryFilter) => {
     setActiveCategory(category);
-    setDisplayLimit(initialLimit); // Reset limit when changing category
+    setDisplayLimit(initialLimit);
   };
 
   const categories: { value: CategoryFilter; label: string }[] = [
@@ -46,62 +46,54 @@ export default function MenuSection({
   ];
 
   return (
-    <section className='bg-white py-8 md:py-12'>
-      <div className='px-4 sm:px-6 lg:px-8'>
-        {/* Section Header */}
-        <h2 className='display-sm md:display-md mb-6 font-extrabold text-neutral-950'>
-          Menu
-        </h2>
+    <section className='bg-white'>
+      {/* Section Header */}
+      <h2 className='mb-4 text-2xl font-extrabold text-gray-900 md:mb-6 md:text-4xl md:leading-none'>
+        Menu
+      </h2>
 
-        {/* Category Tabs */}
-        <div className='mb-6 flex gap-2 md:gap-3'>
-          {categories.map((category) => (
-            <button
-              key={category.value}
-              onClick={() => handleCategoryChange(category.value)}
-              className={`text-sm-custom md:text-md-custom cursor-pointer rounded-full px-4 py-2 font-medium transition-colors md:px-5 ${
-                activeCategory === category.value
-                  ? 'bg-primary text-white'
-                  : 'border border-neutral-600 bg-transparent text-neutral-300 hover:border-neutral-400 hover:text-white'
-              }`}
-            >
-              {category.label}
-            </button>
+      {/* Category Filter Buttons */}
+      <div className='mb-4 flex gap-2 md:mb-6 md:gap-3'>
+        {categories.map((category) => (
+          <button
+            key={category.value}
+            onClick={() => handleCategoryChange(category.value)}
+            className={`cursor-pointer rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+              activeCategory === category.value
+                ? 'border border-[#C12116] bg-[#FFECEC] text-[#C12116]'
+                : 'border border-[#D5D7DA] bg-transparent text-gray-900 hover:border-gray-400'
+            }`}
+          >
+            {category.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Menu Grid */}
+      {displayedMenus.length > 0 ? (
+        <div className='grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-5'>
+          {displayedMenus.map((menu) => (
+            <MenuItemCard key={menu.id} menu={menu} onAddToCart={onAddToCart} />
           ))}
         </div>
+      ) : (
+        <div className='rounded-xl bg-neutral-100 py-12 text-center'>
+          <p className='text-base text-neutral-500'>No menu items found</p>
+        </div>
+      )}
 
-        {/* Menu Grid */}
-        {displayedMenus.length > 0 ? (
-          <div className='grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4'>
-            {displayedMenus.map((menu) => (
-              <MenuItemCard
-                key={menu.id}
-                menu={menu}
-                onAddToCart={onAddToCart}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className='rounded-xl bg-neutral-800 py-12 text-center'>
-            <p className='text-md-custom text-neutral-400'>
-              No menu items found
-            </p>
-          </div>
-        )}
-
-        {/* Show More Button */}
-        {hasMore && (
-          <div className='mt-8 flex justify-center'>
-            <Button
-              variant='outline'
-              onClick={handleShowMore}
-              className='rounded-full border-neutral-600 px-8 text-neutral-300 hover:border-neutral-400 hover:bg-neutral-800 hover:text-white'
-            >
-              Show More
-            </Button>
-          </div>
-        )}
-      </div>
+      {/* Show More Button */}
+      {hasMore && (
+        <div className='mt-6 flex justify-center md:mt-8'>
+          <Button
+            variant='outline'
+            onClick={handleShowMore}
+            className='rounded-full border-[#D5D7DA] px-8 text-gray-900 hover:border-gray-400 hover:bg-gray-50'
+          >
+            Show More
+          </Button>
+        </div>
+      )}
     </section>
   );
 }

@@ -28,7 +28,7 @@ interface CheckoutFormProps {
 export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
   const router = useRouter();
   const checkoutMutation = useCheckout();
-  const { items, total, clearCart } = useCart();
+  const { cartGroups, grandTotal, clearCart } = useCart();
 
   const [formData, setFormData] = useState({
     deliveryAddress: '',
@@ -53,34 +53,19 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
     e.preventDefault();
 
     if (!validateForm()) return;
-    if (items.length === 0) {
+    if (cartGroups.length === 0) {
       toast.error('Your cart is empty');
       return;
     }
 
-    // Group items by restaurant
-    const restaurantMap = new Map<number, CheckoutRestaurant>();
-    items.forEach((item) => {
-      const existing = restaurantMap.get(item.restaurantId);
-      if (existing) {
-        existing.items.push({
-          menuId: item.menuId,
-          quantity: item.quantity,
-        });
-      } else {
-        restaurantMap.set(item.restaurantId, {
-          restaurantId: item.restaurantId,
-          items: [
-            {
-              menuId: item.menuId,
-              quantity: item.quantity,
-            },
-          ],
-        });
-      }
-    });
-
-    const restaurants = Array.from(restaurantMap.values());
+    // Construct payload from cartGroups
+    const restaurants = cartGroups.map((group) => ({
+      restaurantId: group.restaurant.id,
+      items: group.items.map((item) => ({
+        menuId: item.menu.id,
+        quantity: item.quantity,
+      })),
+    }));
 
     try {
       await checkoutMutation.mutateAsync({
@@ -118,12 +103,14 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
     }
   };
 
-  if (items.length === 0) {
+  if (cartGroups.length === 0) {
     return (
       <Card>
         <CardContent className='py-12 text-center'>
           <p className='text-muted-foreground mb-4'>Your cart is empty</p>
-          <Button onClick={() => router.push('/')}>Browse Restaurants</Button>
+          <Button onClick={() => router.push('/restaurants')}>
+            Browse Restaurants
+          </Button>
         </CardContent>
       </Card>
     );
@@ -225,7 +212,7 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
 
               <Button
                 type='submit'
-                className='w-full'
+                className='w-full text-white'
                 size='lg'
                 disabled={checkoutMutation.isPending}
               >
@@ -245,30 +232,36 @@ export default function CheckoutForm({ onSuccess }: CheckoutFormProps) {
 
       {/* Order Summary */}
       <div>
-        <Card className='sticky top-4'>
+        <Card className='sticky top-24'>
           <CardHeader>
             <CardTitle>Order Summary</CardTitle>
           </CardHeader>
           <CardContent className='space-y-4'>
-            {items.map((item) => (
-              <div
-                key={item.id}
-                className='text-sm-custom flex justify-between'
-              >
-                <span>
-                  {item.name} x{item.quantity}
-                </span>
-                <span className='font-medium'>
-                  {formatPrice(item.price * item.quantity)}
-                </span>
+            {cartGroups.map((group) => (
+              <div key={group.restaurant.id} className='space-y-2'>
+                <p className='text-xs font-semibold text-neutral-500 uppercase'>
+                  {group.restaurant.name}
+                </p>
+                {group.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className='text-sm-custom flex justify-between'
+                  >
+                    <span>
+                      {item.menu.foodName} x{item.quantity}
+                    </span>
+                    <span className='font-medium'>
+                      {formatPrice(item.menu.price * item.quantity)}
+                    </span>
+                  </div>
+                ))}
+                <Separator />
               </div>
             ))}
 
-            <Separator />
-
             <div className='flex justify-between font-bold'>
               <span>Total</span>
-              <span className='text-primary'>{formatPrice(total)}</span>
+              <span className='text-primary'>{formatPrice(grandTotal)}</span>
             </div>
           </CardContent>
         </Card>

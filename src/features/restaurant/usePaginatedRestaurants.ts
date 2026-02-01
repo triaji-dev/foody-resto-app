@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { useSearchRestaurants } from './use-search';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { useSearchRestaurants } from './restaurant.queries';
 import type { Restaurant } from '@/types/api';
 
 interface UsePaginatedRestaurantsOptions {
@@ -26,34 +26,43 @@ export function usePaginatedRestaurants({
   initialLimit = 12,
 }: UsePaginatedRestaurantsOptions = {}): UsePaginatedRestaurantsReturn {
   const [currentPage, setCurrentPage] = useState(1);
-  const [displayedRestaurants, setDisplayedRestaurants] = useState<
+  const [additionalRestaurants, setAdditionalRestaurants] = useState<
     Restaurant[]
   >([]);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const prevQueryRef = useRef(query);
 
-  const { data, isLoading, error, refetch } = useSearchRestaurants({
+  const { data, isLoading, error, refetch } = useSearchRestaurants(
     query,
-    page: currentPage,
-    limit: initialLimit,
-  });
+    currentPage,
+    initialLimit
+  );
 
-  // Update displayed restaurants when data changes
+  // Reset when query changes to a DIFFERENT value
   useEffect(() => {
-    if (data?.restaurants) {
-      if (currentPage === 1) {
-        setDisplayedRestaurants(data.restaurants);
-      } else {
-        setDisplayedRestaurants((prev) => [...prev, ...data.restaurants]);
-      }
+    if (prevQueryRef.current !== query) {
+      prevQueryRef.current = query;
+      setCurrentPage(1);
+      setAdditionalRestaurants([]);
+      setIsLoadingMore(false);
+    }
+  }, [query]);
+
+  // Accumulate additional pages (page 2+)
+  useEffect(() => {
+    if (currentPage > 1 && data?.restaurants) {
+      setAdditionalRestaurants((prev) => [...prev, ...data.restaurants]);
     }
   }, [data, currentPage]);
 
-  // Reset when query changes
-  useEffect(() => {
-    setCurrentPage(1);
-    setDisplayedRestaurants([]);
-    setIsLoadingMore(false);
-  }, [query]);
+  // Compute displayed restaurants: page 1 from React Query + additional pages from state
+  const restaurants = useMemo(() => {
+    if (currentPage === 1) {
+      return data?.restaurants ?? [];
+    }
+    const firstPageData = data?.restaurants ?? [];
+    return [...firstPageData, ...additionalRestaurants];
+  }, [data, currentPage, additionalRestaurants]);
 
   const hasMore = Boolean(
     data?.pagination && currentPage < data.pagination.totalPages
@@ -77,12 +86,12 @@ export function usePaginatedRestaurants({
 
   const reset = useCallback(() => {
     setCurrentPage(1);
-    setDisplayedRestaurants([]);
+    setAdditionalRestaurants([]);
     setIsLoadingMore(false);
   }, []);
 
   return {
-    restaurants: displayedRestaurants,
+    restaurants,
     isLoading: isLoading && currentPage === 1,
     isLoadingMore,
     error,

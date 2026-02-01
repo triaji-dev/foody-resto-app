@@ -72,15 +72,21 @@ function Recommended() {
 
         {/* Restaurant Cards Grid */}
         {restaurants && restaurants.length > 0 && (
-          <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
-            {restaurants.map((restaurant) => (
-              <RestaurantCard
-                key={restaurant.id}
-                restaurant={restaurant}
-                onClick={() => router.push(`/restaurant/${restaurant.id}`)}
-              />
-            ))}
-          </div>
+          <>
+            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3'>
+              {restaurants.map((restaurant) => (
+                <RestaurantCard
+                  key={restaurant.id}
+                  restaurant={restaurant}
+                  onClick={() => router.push(`/restaurant/${restaurant.id}`)}
+                />
+              ))}
+            </div>
+            {/* End of data message */}
+            <div className='mt-4 text-center'>
+              <p className='text-sm text-gray-500'>No more results to load</p>
+            </div>
+          </>
         )}
 
         {/* Empty State */}
