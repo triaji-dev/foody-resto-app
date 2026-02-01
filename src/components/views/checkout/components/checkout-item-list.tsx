@@ -1,65 +1,154 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
-import { CartGroupedItem } from '@/services/cart';
-import { formatCurrency } from '@/lib/format';
-import { Separator } from '@/components/ui/separator';
-import { Plus, Minus, Trash2, Store } from 'lucide-react'; // If we want to allow editing, otherwise simpler
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Plus, Minus } from 'lucide-react';
+import { CartGroupedItem, CartItem } from '@/services/cart';
+import { useCart } from '@/features/cart/useCart';
+import { useCartInteractions } from '@/features/cart/useCartInteractions';
+
+// Format price in IDR
+function formatPrice(price: number): string {
+  return `Rp${price.toLocaleString('id-ID')}`;
+}
 
 interface CheckoutItemListProps {
   cartGroups: CartGroupedItem[];
 }
 
 export function CheckoutItemList({ cartGroups }: CheckoutItemListProps) {
+  const router = useRouter();
+  const { updateItem, isUpdating, deleteItem, isDeleting } = useCart(true);
+
+  const { handleUpdateQuantity } = useCartInteractions({
+    updateItem,
+    deleteItem,
+  });
+
+  const handleNavigateToRestaurant = (restaurantId: number) => {
+    router.push(`/restaurant/${restaurantId}`);
+  };
+
   return (
-    <div className='space-y-6'>
-      {cartGroups.map((group) => (
-        <Card
-          key={group.restaurant.id}
-          className='overflow-hidden border-neutral-200 shadow-sm'
-        >
-          <div className='flex items-center gap-2 border-b border-neutral-100 bg-neutral-50 px-6 py-3'>
-            <Store className='h-4 w-4 text-neutral-500' />
-            <h4 className='font-bold text-neutral-900'>
-              {group.restaurant.name}
-            </h4>
-          </div>
-          <CardContent className='space-y-4 p-6'>
-            {group.items.map((item) => (
-              <div key={item.id} className='flex gap-4'>
-                <div className='h-16 w-16 shrink-0 overflow-hidden rounded-lg bg-neutral-100'>
-                  {item.menu.image ? (
-                    <img
-                      src={item.menu.image}
-                      alt={item.menu.foodName}
-                      className='h-full w-full object-cover'
-                    />
-                  ) : (
-                    <div className='h-full w-full bg-neutral-200' />
-                  )}
+    <div className='w-full rounded-2xl bg-white p-4 shadow-[0px_0px_20px_rgba(203,202,202,0.25)]'>
+      <div className='flex flex-col gap-4'>
+        {cartGroups.map((group) => (
+          <div key={group.restaurant.id} className='flex w-full flex-col gap-3'>
+            {/* Restaurant Header */}
+            <div className='flex h-10 w-full flex-row items-center justify-between'>
+              <div className='flex flex-row items-center gap-2'>
+                <div className='relative h-8 w-8 shrink-0'>
+                  <Image
+                    src={group.restaurant.logo || '/icons/resto-shop.png'}
+                    alt={group.restaurant.name}
+                    fill
+                    sizes='32px'
+                    className='rounded object-cover'
+                  />
                 </div>
-                <div className='flex flex-1 flex-col justify-center'>
-                  <div className='flex items-start justify-between'>
-                    <div>
-                      <h4 className='line-clamp-1 font-bold text-neutral-900'>
-                        {item.menu.foodName}
-                      </h4>
-                      <p className='text-primary mt-1 text-sm font-bold'>
-                        {formatCurrency(item.menu.price)}
-                      </p>
-                    </div>
-                    <div className='flex items-center gap-3 rounded-lg border border-neutral-100 bg-neutral-50 px-3 py-1'>
-                      <span className='text-sm font-bold text-neutral-700'>
-                        {item.quantity}x
-                      </span>
-                    </div>
-                  </div>
-                </div>
+                <h3 className='font-[Nunito] text-base leading-[30px] font-bold tracking-[-0.02em] text-gray-900'>
+                  {group.restaurant.name}
+                </h3>
               </div>
-            ))}
-          </CardContent>
-        </Card>
-      ))}
+
+              {/* Add Item Button */}
+              <button
+                className='flex h-9 shrink-0 cursor-pointer flex-row items-center justify-center gap-2 rounded-full border border-[#D5D7DA] px-6 py-2 transition-colors hover:bg-gray-50'
+                onClick={() => handleNavigateToRestaurant(group.restaurant.id)}
+              >
+                <span className='font-[Nunito] text-sm leading-7 font-bold tracking-[-0.02em] text-gray-900'>
+                  Add item
+                </span>
+              </button>
+            </div>
+
+            {/* Cart Items */}
+            <div className='flex w-full flex-col gap-3'>
+              {group.items.map((item) => (
+                <CheckoutItemCard
+                  key={item.id}
+                  item={item}
+                  onUpdateQuantity={handleUpdateQuantity}
+                  isUpdating={isUpdating}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Item Card Component
+interface CheckoutItemCardProps {
+  item: CartItem;
+  onUpdateQuantity: (
+    id: number,
+    currentQuantity: number,
+    change: number
+  ) => void;
+  isUpdating: boolean;
+}
+
+function CheckoutItemCard({
+  item,
+  onUpdateQuantity,
+  isUpdating,
+}: CheckoutItemCardProps) {
+  const handleDecrease = () => onUpdateQuantity(item.id, item.quantity, -1);
+  const handleIncrease = () => onUpdateQuantity(item.id, item.quantity, 1);
+
+  return (
+    <div className='flex h-[84px] w-full flex-row items-center gap-4'>
+      {/* Food Image */}
+      <div className='relative h-16 w-16 shrink-0 overflow-hidden rounded-xl'>
+        <Image
+          src={item.menu.image || '/images/menu-placeholder.jpg'}
+          alt={item.menu.foodName}
+          fill
+          sizes='64px'
+          className='object-cover'
+        />
+      </div>
+
+      {/* Food Details */}
+      <div className='flex min-w-0 flex-1 flex-col items-start'>
+        <div className='w-full truncate font-[Nunito] text-sm leading-7 font-medium text-gray-900'>
+          {item.menu.foodName}
+        </div>
+        <div className='font-[Nunito] text-base leading-[30px] font-extrabold text-gray-900'>
+          {formatPrice(item.menu.price)}
+        </div>
+      </div>
+
+      {/* Quantity Controls */}
+      <div className='flex shrink-0 flex-row items-center gap-3 md:gap-4'>
+        {/* Minus Button */}
+        <button
+          onClick={handleDecrease}
+          disabled={isUpdating}
+          className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-[#D5D7DA] transition-colors hover:bg-gray-50 disabled:opacity-50 md:h-9 md:w-9'
+          type='button'
+        >
+          <Minus className='h-4 w-4 text-gray-900 md:h-5 md:w-5' />
+        </button>
+
+        {/* Quantity */}
+        <span className='min-w-[16px] text-center font-[Nunito] text-sm leading-[30px] font-semibold tracking-[-0.02em] text-gray-900 md:min-w-[20px] md:text-base'>
+          {item.quantity}
+        </span>
+
+        {/* Plus Button */}
+        <button
+          onClick={handleIncrease}
+          disabled={isUpdating}
+          className='flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#C12116] transition-colors hover:bg-[#B01E14] disabled:opacity-50 md:h-9 md:w-9'
+          type='button'
+        >
+          <Plus className='h-4 w-4 text-white md:h-5 md:w-5' />
+        </button>
+      </div>
     </div>
   );
 }

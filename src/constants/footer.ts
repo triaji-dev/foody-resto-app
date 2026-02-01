@@ -39,11 +39,11 @@ export const FOOTER_NAV_SECTIONS = [
     title: 'Explore',
     links: [
       { label: 'All Food', href: ROUTES.RESTAURANTS },
-      { label: 'Nearby', href: ROUTES.RESTAURANTS },
-      { label: 'Discount', href: ROUTES.RESTAURANTS },
-      { label: 'Best Seller', href: ROUTES.RESTAURANTS },
-      { label: 'Delivery', href: ROUTES.RESTAURANTS },
-      { label: 'Lunch', href: ROUTES.RESTAURANTS },
+      { label: 'Nearby', href: '/restaurants?range=10' },
+      { label: 'Discount', href: '/restaurants?category=discount' },
+      { label: 'Best Seller', href: '/restaurants?rating=4.5' },
+      { label: 'Delivery', href: '/restaurants?delivery=true' },
+      { label: 'Lunch', href: '/restaurants?category=lunch' },
     ],
   },
   {

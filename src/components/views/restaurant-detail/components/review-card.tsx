@@ -27,7 +27,7 @@ function formatDate(dateString: string): string {
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   const userName = review.user?.name || review.userName || 'Anonymous';
-  const userAvatar = review.user?.avatar;
+  const userAvatar = review.userAvatar || review.user?.avatar;
 
   return (
     <div className='flex flex-col gap-3 rounded-2xl border border-neutral-100 bg-white p-4 shadow-sm md:p-5'>

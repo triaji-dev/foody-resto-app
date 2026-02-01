@@ -296,12 +296,12 @@
   line-height: var(--text-lg--line-height);
 }
 
-@utility text-md {
+@utility text-md-custom {
   font-size: var(--text-md);
   line-height: var(--text-md--line-height);
 }
 
-@utility text-sm-custom-custom {
+@utility text-sm-custom {
   font-size: var(--text-sm-custom);
   line-height: var(--text-sm-custom--line-height);
 }

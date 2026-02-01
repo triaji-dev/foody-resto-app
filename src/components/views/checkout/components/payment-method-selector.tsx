@@ -1,8 +1,7 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { CreditCard } from 'lucide-react';
 
 interface PaymentMethodSelectorProps {
   selectedMethod: string;
@@ -10,10 +9,22 @@ interface PaymentMethodSelectorProps {
 }
 
 const PAYMENT_METHODS = [
-  { id: 'Bank Negara Indonesia', label: 'Bank Negara Indonesia', icon: 'BNI' },
-  { id: 'Bank Rakyat Indonesia', label: 'Bank Rakyat Indonesia', icon: 'BRI' },
-  { id: 'Bank Central Asia', label: 'Bank Central Asia', icon: 'BCA' },
-  { id: 'Mandiri', label: 'Mandiri', icon: 'Mandiri' },
+  {
+    id: 'Bank Negara Indonesia',
+    label: 'Bank Negara Indonesia',
+    logo: '/icons/BNI.png',
+  },
+  {
+    id: 'Bank Rakyat Indonesia',
+    label: 'Bank Rakyat Indonesia',
+    logo: '/icons/BRI.png',
+  },
+  {
+    id: 'Bank Central Asia',
+    label: 'Bank Central Asia',
+    logo: '/icons/BCA.png',
+  },
+  { id: 'Mandiri', label: 'Mandiri', logo: '/icons/Mandiri.png' },
 ];
 
 export function PaymentMethodSelector({
@@ -21,47 +32,56 @@ export function PaymentMethodSelector({
   onSelect,
 }: PaymentMethodSelectorProps) {
   return (
-    <Card className='h-fit border-neutral-200 shadow-sm'>
-      <CardHeader className='pb-3'>
-        <CardTitle className='text-lg font-bold'>Payment Method</CardTitle>
-      </CardHeader>
-      <CardContent className='grid gap-3'>
-        {PAYMENT_METHODS.map((method) => (
-          <div
-            key={method.id}
-            onClick={() => onSelect(method.id)}
-            className={cn(
-              'flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all',
-              selectedMethod === method.id
-                ? 'border-primary ring-primary bg-red-50/50 ring-1'
-                : 'border-neutral-200 bg-white hover:border-neutral-300'
-            )}
-          >
-            <div className='flex items-center gap-3'>
-              <div className='flex h-10 w-14 shrink-0 items-center justify-center rounded bg-gray-100 text-xs font-bold text-gray-600'>
-                {/* Placeholder for Bank Logo */}
-                {method.icon}
+    <div className='flex w-full flex-col items-start'>
+      <h3 className='mb-4 w-full font-[Nunito] text-base leading-[30px] font-extrabold text-gray-900'>
+        Payment Method
+      </h3>
+
+      <div className='flex w-full flex-col'>
+        {PAYMENT_METHODS.map((method, index) => (
+          <div key={method.id}>
+            <div
+              className='flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg p-2 transition-colors hover:bg-gray-50'
+              onClick={() => onSelect(method.id)}
+            >
+              {/* Bank Logo */}
+              <div className='flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#D5D7DA] p-1'>
+                <Image
+                  src={method.logo}
+                  alt={method.label}
+                  width={40}
+                  height={40}
+                  className='object-contain'
+                />
               </div>
-              <span className='font-medium text-neutral-900'>
+
+              {/* Bank Name */}
+              <span className='flex-1 font-[Nunito] text-sm leading-7 font-normal tracking-[-0.02em] text-gray-900'>
                 {method.label}
               </span>
+
+              {/* Radio Button */}
+              <div
+                className={cn(
+                  'flex h-6 w-6 shrink-0 items-center justify-center rounded-full',
+                  selectedMethod === method.id
+                    ? 'bg-[#C12116]'
+                    : 'border-2 border-[#A4A7AE]'
+                )}
+              >
+                {selectedMethod === method.id && (
+                  <div className='h-2 w-2 rounded-full bg-white' />
+                )}
+              </div>
             </div>
 
-            <div
-              className={cn(
-                'flex h-5 w-5 items-center justify-center rounded-full border',
-                selectedMethod === method.id
-                  ? 'border-primary bg-primary'
-                  : 'border-neutral-300'
-              )}
-            >
-              {selectedMethod === method.id && (
-                <div className='h-2 w-2 rounded-full bg-white' />
-              )}
-            </div>
+            {/* Separator between items */}
+            {index < PAYMENT_METHODS.length - 1 && (
+              <div className='my-3 h-px w-full bg-[#E9EAEB]' />
+            )}
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -31,100 +31,104 @@ export default function RestaurantHero({ images, name }: RestaurantHeroProps) {
 
   return (
     <section className='w-full'>
-      {/* Mobile View: Slider */}
-      <div className='relative md:hidden'>
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className='flex w-full snap-x snap-mandatory overflow-x-auto [&::-webkit-scrollbar]:hidden'
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-          {displayImages.map((image, index) => (
-            <div
-              key={index}
-              className='relative h-[250px] min-w-full shrink-0 snap-center overflow-hidden'
-            >
-              <Image
-                src={image}
-                alt={`${name} - Slide ${index + 1}`}
-                fill
-                priority={index === 0}
-                className='object-cover'
-                sizes='(max-width: 768px) 100vw, 50vw'
-              />
-            </div>
-          ))}
-        </div>
+      {/* Mobile View: Slider with proper dimensions */}
+      <div className='md:hidden'>
+        <div className='flex flex-col items-center gap-3'>
+          {/* Image Container - 361x260 */}
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className='relative flex w-full max-w-[361px] snap-x snap-mandatory overflow-x-auto rounded-2xl [&::-webkit-scrollbar]:hidden'
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {displayImages.map((image, index) => (
+              <div
+                key={index}
+                className='relative h-[260px] min-w-full shrink-0 snap-center overflow-hidden rounded-2xl'
+              >
+                <Image
+                  src={image}
+                  alt={`${name} - Slide ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  className='object-cover'
+                  sizes='(max-width: 768px) 100vw, 50vw'
+                />
+              </div>
+            ))}
+          </div>
 
-        {/* Dot Navigation */}
-        <div className='absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2'>
-          {displayImages.map((_, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                if (scrollRef.current) {
-                  scrollRef.current.scrollTo({
-                    left: index * scrollRef.current.clientWidth,
-                    behavior: 'smooth',
-                  });
-                }
-              }}
-              className={`h-2 w-2 cursor-pointer rounded-full transition-all ${
-                activeSlide === index
-                  ? 'bg-primary w-4'
-                  : 'bg-white/50 hover:bg-white/80'
-              }`}
-            />
-          ))}
+          {/* Pagination Dots */}
+          <div className='flex items-center gap-1'>
+            {displayImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  if (scrollRef.current) {
+                    scrollRef.current.scrollTo({
+                      left: index * scrollRef.current.clientWidth,
+                      behavior: 'smooth',
+                    });
+                  }
+                }}
+                className={`h-2 w-2 rounded-full transition-colors duration-200 ${
+                  activeSlide === index ? 'bg-[#C12116]' : 'bg-[#D9D9D9]'
+                }`}
+                aria-label={`Go to image ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Desktop View: Grid */}
-      <div className='hidden h-[300px] grid-cols-2 gap-2 sm:h-[400px] md:grid md:h-[500px] lg:gap-4'>
-        {/* Main large image - left side */}
-        <div className='relative overflow-hidden rounded-xl lg:rounded-2xl'>
-          <Image
-            src={displayImages[0]}
-            alt={`${name} - Main`}
-            fill
-            priority
-            className='object-cover transition-transform duration-500 hover:scale-105'
-            sizes='(max-width: 768px) 50vw, 40vw'
-          />
-        </div>
-
-        {/* Right side - 3 images grid */}
-        <div className='grid grid-rows-2 gap-2 lg:gap-4'>
-          {/* Top right - medium image */}
-          <div className='relative overflow-hidden rounded-xl lg:rounded-2xl'>
+      {/* Desktop View: Grid with proper proportions */}
+      <div className='hidden md:block'>
+        <div className='flex gap-5' style={{ height: '470px' }}>
+          {/* Main Image - ~55% width */}
+          <div className='relative w-[55%] overflow-hidden rounded-2xl'>
             <Image
-              src={displayImages[1]}
-              alt={`${name} - Gallery 1`}
+              src={displayImages[0]}
+              alt={`${name} - Main`}
               fill
+              priority
               className='object-cover transition-transform duration-500 hover:scale-105'
-              sizes='(max-width: 768px) 50vw, 30vw'
+              sizes='651px'
             />
           </div>
 
-          {/* Bottom right - 2 small images */}
-          <div className='grid grid-cols-2 gap-2 lg:gap-4'>
-            <div className='relative overflow-hidden rounded-xl lg:rounded-2xl'>
+          {/* Right Side Images - ~45% width */}
+          <div className='flex flex-1 flex-col gap-5'>
+            {/* Top Image - 302px height */}
+            <div className='relative h-[302px] overflow-hidden rounded-2xl'>
               <Image
-                src={displayImages[2]}
-                alt={`${name} - Gallery 2`}
+                src={displayImages[1]}
+                alt={`${name} - Gallery 1`}
                 fill
                 className='object-cover transition-transform duration-500 hover:scale-105'
-                sizes='(max-width: 768px) 25vw, 15vw'
+                sizes='529px'
               />
             </div>
-            <div className='relative overflow-hidden rounded-xl lg:rounded-2xl'>
-              <Image
-                src={displayImages[3]}
-                alt={`${name} - Gallery 3`}
-                fill
-                className='object-cover transition-transform duration-500 hover:scale-105'
-                sizes='(max-width: 768px) 25vw, 15vw'
-              />
+
+            {/* Bottom Two Images - 148px height */}
+            <div className='flex flex-1 gap-5'>
+              <div className='relative flex-1 overflow-hidden rounded-2xl'>
+                <Image
+                  src={displayImages[2]}
+                  alt={`${name} - Gallery 2`}
+                  fill
+                  className='object-cover transition-transform duration-500 hover:scale-105'
+                  sizes='255px'
+                />
+              </div>
+              <div className='relative flex-1 overflow-hidden rounded-2xl'>
+                <Image
+                  src={displayImages[3]}
+                  alt={`${name} - Gallery 3`}
+                  fill
+                  className='object-cover transition-transform duration-500 hover:scale-105'
+                  sizes='255px'
+                />
+              </div>
             </div>
           </div>
         </div>

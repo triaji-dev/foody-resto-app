@@ -8,6 +8,12 @@ import { useAuth } from '@/features/auth';
 import { ROUTES } from '@/constants';
 import { CartGroupedItem } from '@/services/cart';
 
+// LocalStorage keys
+const STORAGE_KEYS = {
+  ADDRESS: 'checkout_address',
+  PHONE: 'checkout_phone',
+} as const;
+
 interface UseCheckoutProps {
   cartGroups: CartGroupedItem[];
   onCheckoutSuccess?: () => void;
@@ -22,12 +28,43 @@ export function useCheckout({
   const queryClient = useQueryClient();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
+  const [address, setAddressState] = useState('');
+  const [phone, setPhoneState] = useState('');
   const [notes, setNotes] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('Cash');
+  const [paymentMethod, setPaymentMethod] = useState('Bank Negara Indonesia');
 
-  // Fetch orders to pre-fill address
+  // Load saved address and phone from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedAddress = localStorage.getItem(STORAGE_KEYS.ADDRESS);
+      const savedPhone = localStorage.getItem(STORAGE_KEYS.PHONE);
+
+      if (savedAddress) {
+        setAddressState(savedAddress);
+      }
+      if (savedPhone) {
+        setPhoneState(savedPhone);
+      }
+    }
+  }, []);
+
+  // Wrapper to save address to localStorage
+  const setAddress = (value: string) => {
+    setAddressState(value);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEYS.ADDRESS, value);
+    }
+  };
+
+  // Wrapper to save phone to localStorage
+  const setPhone = (value: string) => {
+    setPhoneState(value);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEYS.PHONE, value);
+    }
+  };
+
+  // Fetch orders to pre-fill address if not saved
   const { data: ordersResponse } = useQuery({
     queryKey: ['orders'],
     queryFn: () => orderService.getMyOrders(),
@@ -43,8 +80,6 @@ export function useCheckout({
 
       await queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
       setIsOpen(false);
-      // Removed router.push(ROUTES.HOME) to allow SuccessModal to show
-      // Navigation is now handled by the SuccessModal or CheckoutPage
     },
     onError: (
       error: Error & { response?: { data?: { message?: string } } }
@@ -82,13 +117,19 @@ export function useCheckout({
 
   const openCheckout = () => {
     if (user) {
-      setPhone(user.phone || '');
+      // Use saved phone or user's phone
+      if (!phone && user.phone) {
+        setPhone(user.phone);
+      }
 
-      const orders = ordersResponse?.data?.data || [];
-      if (!address && orders.length > 0) {
-        const lastOrder = orders[0];
-        if (lastOrder.deliveryAddress) {
-          setAddress(lastOrder.deliveryAddress);
+      // Use saved address or get from last order
+      if (!address) {
+        const orders = ordersResponse?.data?.data || [];
+        if (orders.length > 0) {
+          const lastOrder = orders[0];
+          if (lastOrder.deliveryAddress) {
+            setAddress(lastOrder.deliveryAddress);
+          }
         }
       }
     }
@@ -106,7 +147,7 @@ export function useCheckout({
       notes,
       setNotes,
       paymentMethod,
-      setPaymentMethod: (method: string) => setPaymentMethod(method as string), // Simple wrapper or direct setter
+      setPaymentMethod: (method: string) => setPaymentMethod(method),
     },
     openCheckout,
     submitCheckout: handleCheckout,

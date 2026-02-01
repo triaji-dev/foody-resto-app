@@ -2,21 +2,24 @@
 
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { ROUTES } from '@/constants';
 
 export function CartEmptyState() {
   return (
-    <div className='flex h-80 flex-col items-center justify-center rounded-xl border border-dashed border-neutral-300 bg-white'>
-      <div className='mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100'>
-        <ShoppingBag className='h-8 w-8 text-neutral-400' />
+    <div className='flex w-full flex-col items-center justify-center rounded-2xl bg-white p-16 shadow-lg'>
+      <div className='mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100'>
+        <ShoppingBag className='h-8 w-8 text-gray-400' />
       </div>
-      <h3 className='text-lg-custom mb-2 font-bold'>Your cart is empty</h3>
-      <p className='text-md-custom mb-6 text-neutral-500'>
+      <h3 className='mb-2 text-lg font-bold text-gray-900'>
+        Your cart is empty
+      </h3>
+      <p className='mb-6 text-base text-gray-500'>
         Explore restaurants and add some delicious food!
       </p>
       <Link href={ROUTES.RESTAURANTS}>
-        <Button className='text-white'>Browse Restaurants</Button>
+        <button className='cursor-pointer rounded-full bg-[#C12116] px-8 py-3 font-bold text-white transition-colors hover:bg-[#B01E14]'>
+          Start Shopping
+        </button>
       </Link>
     </div>
   );

@@ -27,7 +27,7 @@ const homeMenuData = [
   },
   {
     title: 'Delivery',
-    href: '/restaurants',
+    href: '/restaurants?delivery=true',
     icon: '/icons/delivery-icon.png',
   },
   {
