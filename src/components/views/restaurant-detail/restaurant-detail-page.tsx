@@ -6,6 +6,7 @@ import RestaurantHero from './components/restaurant-hero';
 import RestaurantInfo from './components/restaurant-info';
 import MenuSection from './components/menu-section';
 import ReviewSection from './components/review-section';
+import { useCart } from '@/features/cart/useCart';
 
 interface RestaurantDetailPageProps {
   restaurantId: number;
@@ -21,14 +22,15 @@ export default function RestaurantDetailPage({
   } = useQuery({
     queryKey: ['restaurant', restaurantId],
     queryFn: () => restaurantService.getRestaurantDetail(restaurantId),
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 
   const restaurant = response?.data;
 
+  const { addToCart, isAdding } = useCart(false);
+
   const handleAddToCart = (menuId: number, quantity: number) => {
-    // TODO: Implement cart functionality
-    console.log('Add to cart:', { menuId, quantity, restaurantId });
+    addToCart({ menuId, quantity, restaurantId });
   };
 
   if (isLoading) {

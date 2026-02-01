@@ -115,6 +115,8 @@ export interface RestaurantDetail extends Restaurant {
 
 export interface RestaurantFilters {
   location?: string;
+  lat?: number;
+  long?: number; // Backend usually expects 'long' or 'lng' - checking usage
   range?: number;
   priceMin?: number;
   priceMax?: number;

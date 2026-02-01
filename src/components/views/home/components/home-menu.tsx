@@ -12,27 +12,27 @@ const homeMenuData = [
   },
   {
     title: 'Nearby',
-    href: '#',
+    href: '/restaurants?range=10',
     icon: '/icons/nearby-icon.png',
   },
   {
     title: 'Discount',
-    href: '#',
+    href: '/restaurants?category=discount',
     icon: '/icons/discount-icon.png',
   },
   {
     title: 'Best Seller',
-    href: '#',
+    href: '/restaurants?rating=4.5',
     icon: '/icons/best-seller-icon.png',
   },
   {
     title: 'Delivery',
-    href: '#',
+    href: '/restaurants',
     icon: '/icons/delivery-icon.png',
   },
   {
     title: 'Lunch',
-    href: '#',
+    href: '/restaurants?category=lunch',
     icon: '/icons/lunch-icon.png',
   },
 ];

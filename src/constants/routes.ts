@@ -3,8 +3,9 @@ export const ROUTES = {
   AUTH: '/auth',
   RESTAURANTS: '/restaurants',
   CART: '/cart',
-  ORDERS: '/orders',
+  ORDERS: '/profile/orders',
   PROFILE: '/profile',
   HELP: '/help',
   CONTACT: '/contact',
+  CHECKOUT: '/checkout',
 } as const;

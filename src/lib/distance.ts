@@ -60,8 +60,8 @@ export function getMockCoordinates(place?: string): {
   for (const [key, coords] of Object.entries(placeMappings)) {
     if (place.toLowerCase().includes(key.toLowerCase())) {
       return {
-        lat: coords.lat + (Math.random() - 0.5) * 0.02,
-        lng: coords.lng + (Math.random() - 0.5) * 0.02,
+        lat: coords.lat,
+        lng: coords.lng,
       };
     }
   }
