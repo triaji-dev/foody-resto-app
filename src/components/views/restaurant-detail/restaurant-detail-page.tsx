@@ -1,7 +1,6 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { restaurantService } from '@/services/restaurant';
+import { useRestaurantDetail } from '@/features/restaurant';
 import RestaurantHero from './components/restaurant-hero';
 import RestaurantInfo from './components/restaurant-info';
 import MenuSection from './components/menu-section';
@@ -16,16 +15,10 @@ export default function RestaurantDetailPage({
   restaurantId,
 }: RestaurantDetailPageProps) {
   const {
-    data: response,
+    data: restaurant,
     isLoading,
     error,
-  } = useQuery({
-    queryKey: ['restaurant', restaurantId],
-    queryFn: () => restaurantService.getRestaurantDetail(restaurantId),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const restaurant = response?.data;
+  } = useRestaurantDetail(restaurantId);
 
   const { addToCart, isAdding } = useCart(false);
 
